@@ -1,12 +1,10 @@
 import java.util.Calendar;
 import java.util.Set;
-/**
- * A class to represent meetings
- *
- * Meetings have unique IDs, scheduled date and a list of participating contacts
- */
-public interface Meeting {
 
+/**
+ * Created by James Pickles on 22/02/2016.
+ */
+public class MeetingImpl implements Meeting {
     /**
      * Returns the id of the meeting.
      *
