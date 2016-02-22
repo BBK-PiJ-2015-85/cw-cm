@@ -104,12 +104,29 @@ public class ContactImplTest {
         assertEquals("Lee", lee.getName());
     }
 
-    /*
-    @Test
-    public void testGetNotes() throws Exception {
 
+    @Test
+    public void testGetNotesJim() {
+        assertEquals("test contact 1", jim.getNotes());
+    }
+    @Test
+    public void testGetNotesBen() {
+        assertEquals("test contact 2", ben.getNotes());
+    }
+    @Test
+    public void testGetNotesSam() {
+        assertEquals("test contact 3", sam.getNotes());
+    }
+    @Test
+    public void testGetNotesWill() {
+        assertEquals("test contact 4", will.getNotes());
+    }
+    @Test
+    public void testGetNotesJen() {
+        assertEquals("test contact 5", jen.getNotes());
     }
 
+    /*
     @Test
     public void testAddNotes() throws Exception {
 
