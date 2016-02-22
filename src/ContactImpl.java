@@ -5,12 +5,24 @@ public class ContactImpl implements Contact {
     private String contactNotes;
 
     public ContactImpl(int id, String name, String notes) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID must be a non zero positive integer.");
+        }
+        if (name == null || notes == null) {
+            throw new NullPointerException("Null parameters cannot be passed to constructor.");
+        }
         contactId = id;
         contactName = name;
         contactNotes = notes;
     }
 
     public ContactImpl(int id, String name) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID must be a non zero positive integer.");
+        }
+        if (name == null) {
+            throw new NullPointerException("Null parameters cannot be passed to constructor.");
+        }
         contactId = id;
         contactName = name;
         contactNotes = "";

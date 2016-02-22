@@ -10,14 +10,18 @@ public class MeetingImpl implements Meeting {
      *
      * @return the id of the meeting.
      */
-    int getId();
+    public int getId() {
+        return 0;
+    }
 
     /**
      * Return the date of the meeting.
      *
      * @return the date of the meeting.
      */
-    Calendar getDate();
+    public Calendar getDate() {
+        return null;
+    }
 
     /**
      * Return the details of people that attended the meeting.
@@ -28,5 +32,7 @@ public class MeetingImpl implements Meeting {
      *
      * @return the details of people that attended the meeting.
      */
-    Set<Contact> getContacts();
+    public Set<Contact> getContacts() {
+        return null;
+    }
 }
