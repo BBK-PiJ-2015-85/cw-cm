@@ -62,7 +62,7 @@ public class ContactImplTest {
         assertEquals(10, lee.getId());
     }
 
-    /*
+
     @Test
     public void testGetNameJim() {
         assertEquals("Jim", jim.getName());
@@ -104,6 +104,7 @@ public class ContactImplTest {
         assertEquals("Lee", lee.getName());
     }
 
+    /*
     @Test
     public void testGetNotes() throws Exception {
 

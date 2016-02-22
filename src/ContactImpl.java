@@ -30,7 +30,7 @@ public class ContactImpl implements Contact {
      * @return the name of the contact.
      */
     public String getName() {
-        return null;
+        return contactName;
     }
 
     /**
