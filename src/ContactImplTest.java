@@ -125,6 +125,26 @@ public class ContactImplTest {
     public void testGetNotesJen() {
         assertEquals("test contact 5", jen.getNotes());
     }
+    @Test
+    public void testGetNotesMax() {
+        assertEquals("", max.getNotes());
+    }
+    @Test
+    public void testGetNotesDan() {
+        assertEquals("", dan.getNotes());
+    }
+    @Test
+    public void testGetNotesJane() {
+        assertEquals("", jane.getNotes());
+    }
+    @Test
+    public void testGetNotesKay() {
+        assertEquals("", kay.getNotes());
+    }
+    @Test
+    public void testGetNotesLee() {
+        assertEquals("", lee.getNotes());
+    }
 
     /*
     @Test
