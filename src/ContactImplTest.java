@@ -3,7 +3,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-
+/**
+ * Created by James Pickles on 22/02/2016.
+ */
 public class ContactImplTest {
     Contact jim, ben, sam, will, jen, max, dan, jane, kay, lee;
 

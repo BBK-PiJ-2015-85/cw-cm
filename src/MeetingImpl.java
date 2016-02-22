@@ -4,7 +4,11 @@ import java.util.Set;
 /**
  * Created by James Pickles on 22/02/2016.
  */
-public class MeetingImpl implements Meeting {
+public abstract class MeetingImpl implements Meeting {
+
+    public MeetingImpl(int meetingId, Calendar date, Set<Contact> attendees) {
+
+    }
     /**
      * Returns the id of the meeting.
      *

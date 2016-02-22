@@ -1,4 +1,6 @@
-
+/**
+ * Created by James Pickles on 22/02/2016.
+ */
 public class ContactImpl implements Contact {
     private int contactId;
     private String contactName;
