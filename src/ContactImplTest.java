@@ -146,10 +146,62 @@ public class ContactImplTest {
         assertEquals("", lee.getNotes());
     }
 
-    /*
-    @Test
-    public void testAddNotes() throws Exception {
 
+    @Test
+    public void testAddNotesJim() {
+        jim.addNotes("adding extra notes to Jim");
+        assertEquals("test contact 1; adding extra notes to Jim", jim.getNotes());
     }
-    */
+    @Test
+    public void testAddNotesBen() {
+        ben.addNotes("adding extra notes to Ben");
+        assertEquals("test contact 2; adding extra notes to Ben", ben.getNotes());
+    }
+    @Test
+    public void testAddNotesSam() {
+        sam.addNotes("adding extra notes to Sam");
+        assertEquals("test contact 3; adding extra notes to Sam", sam.getNotes());
+    }
+    @Test
+    public void testAddNotesWill() {
+        will.addNotes("adding extra notes to Will");
+        assertEquals("test contact 4; adding extra notes to Will", will.getNotes());
+    }
+    @Test
+    public void testAddNotesJen() {
+        jen.addNotes("adding extra notes to Jen");
+        assertEquals("test contact 5; adding extra notes to Jen", jen.getNotes());
+    }
+    @Test
+    public void testAddNotesMax() {
+        max.addNotes("adding notes to Max");
+        assertEquals("adding notes to Max", max.getNotes());
+    }
+    @Test
+    public void testAddTwoNotesDan() {
+        dan.addNotes("adding notes to Dan");
+        dan.addNotes("adding some more notes to Dan");
+        assertEquals("adding notes to Dan; adding some more notes to Dan", dan.getNotes());
+    }
+    @Test
+    public void testAddThreeNotesJane() {
+        jane.addNotes("adding notes to Jane");
+        jane.addNotes("adding more notes to Jane");
+        jane.addNotes("adding even more notes to Jane");
+        assertEquals("adding notes to Jane; adding more notes to Jane; adding even more notes to Jane", jane.getNotes());
+    }
+    @Test
+    public void testAddNotesKay() {
+        kay.addNotes("adding notes to Kay");
+        kay.addNotes("adding more notes to Kay");
+        kay.addNotes("adding even more notes to Kay");
+        kay.addNotes("adding last set of notes to Kay");
+        assertEquals("adding notes to Kay; adding more notes to Kay; adding even more notes to Kay; adding last set of notes to Kay", kay.getNotes());
+    }
+    @Test
+    public void testAddEmptyNotesLee() {
+        lee.addNotes("");
+        assertEquals("", lee.getNotes());
+    }
+
 }
