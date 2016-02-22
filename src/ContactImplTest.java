@@ -234,4 +234,12 @@ public class ContactImplTest {
     public void testAddNegativeIdToOtherConstructor() {
         Contact test = new ContactImpl(-1, "Test", "Test");
     }
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddEmptyNametoConstructor() {
+        Contact test = new ContactImpl(-1, "", "Test");
+    }
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddEmptyNametoOtherConstructor() {
+        Contact test = new ContactImpl(-1, "", "Test");
+    }
 }

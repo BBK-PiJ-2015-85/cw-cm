@@ -8,6 +8,9 @@ public class ContactImpl implements Contact {
         if (id <= 0) {
             throw new IllegalArgumentException("ID must be a non zero positive integer.");
         }
+        if (name.equals("")) {
+            throw new IllegalArgumentException("Contact name must not be empty.");
+        }
         if (name == null || notes == null) {
             throw new NullPointerException("Null parameters cannot be passed to constructor.");
         }
@@ -19,6 +22,9 @@ public class ContactImpl implements Contact {
     public ContactImpl(int id, String name) {
         if (id <= 0) {
             throw new IllegalArgumentException("ID must be a non zero positive integer.");
+        }
+        if (name.equals("")) {
+            throw new IllegalArgumentException("Contact name must not be empty.");
         }
         if (name == null) {
             throw new NullPointerException("Null parameters cannot be passed to constructor.");
