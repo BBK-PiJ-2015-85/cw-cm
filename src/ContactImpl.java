@@ -13,6 +13,7 @@ public class ContactImpl implements Contact {
     public ContactImpl(int id, String name) {
         contactId = id;
         contactName = name;
+        contactNotes = "";
     }
 
     /**
@@ -42,7 +43,7 @@ public class ContactImpl implements Contact {
      * @return a string with notes about the contact, maybe empty.
      */
     public String getNotes() {
-        return null;
+        return contactNotes;
     }
 
     /**
