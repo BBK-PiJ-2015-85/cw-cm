@@ -1,5 +1,20 @@
 
-public class CantactImpl implements Contact {
+public class ContactImpl implements Contact {
+    private int contactId;
+    private String contactName;
+    private String contactNotes;
+
+    public ContactImpl(int id, String name, String notes) {
+        contactId = id;
+        contactName = name;
+        contactNotes = notes;
+    }
+
+    public ContactImpl(int id, String name) {
+        contactId = id;
+        contactName = name;
+    }
+
     /**
      * Returns the ID of the contact.
      *
