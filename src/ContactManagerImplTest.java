@@ -11,11 +11,48 @@ import static org.junit.Assert.assertTrue;
  * Created by James Pickles on 23/02/2016.
  */
 public class ContactManagerImplTest {
-    ContactManager cm;
+    ContactManager cm, cm1, cm2, cm3;
+    Set<Contact> testSet1, testSet2, testSet3;
+    Contact con1, con2, con3;
 
     @Before
     public void setUp() {
+
+        //create 3 test contacts
+        con1 = new ContactImpl(1, "Con1", "test contact 1");
+        con2 = new ContactImpl(2, "Con2", "test contact 2");
+        con3 = new ContactImpl(3, "Con3", "test contact 3");
+
+        //create 3 test contact sets
+        //one test set with one contact
+        testSet1 = new HashSet<>();
+        testSet1.add(con1);
+        //one test set with two contacts
+        testSet2 = new HashSet<>();
+        testSet2.add(con1);
+        testSet2.add(con2);
+        //one test set with three contacts
+        testSet3 = new HashSet<>();
+        testSet3.add(con1);
+        testSet3.add(con2);
+        testSet3.add(con3);
+
+        //create four test ContactManagers
+        //one with no contacts
         cm = new ContactManagerImpl();
+        //one with one contact
+        cm1 = new ContactManagerImpl();
+        cm1.addNewContact("Con1", "test contact 1");
+        //one with two contacts
+        cm2 = new ContactManagerImpl();
+        cm2.addNewContact("Con1", "test contact 1");
+        cm2.addNewContact("Con2", "test contact 2");
+        //one with three contacts
+        cm3 = new ContactManagerImpl();
+        cm3.addNewContact("Con1", "test contact 1");
+        cm3.addNewContact("Con2", "test contact 2");
+        cm3.addNewContact("Con3", "test contact 3");
+
     }
 
     /**
@@ -95,8 +132,9 @@ public class ContactManagerImplTest {
     public void testsGetOneContact() {
         cm.addNewContact("Ben", "myNotes");
         Set<Contact> testSet = new HashSet<>();
-        testSet.add(new ContactImpl(1, "Ben", "myNotes"));
-        assertEquals(testSet, cm.getContacts(1));
+        testSet = cm.getContacts(1);
+        assertEquals(1, testSet.size());
+        assertTrue(testSet.containsAll(cm.getContacts(1)));
     }
 
     @Test
@@ -115,8 +153,8 @@ public class ContactManagerImplTest {
         Set<Contact> testSet = new HashSet<>();
         testSet.add(new ContactImpl(1, "Ben", "myNotes"));
         testSet.add(new ContactImpl(2, "Tim", "myNotes"));
-        assertEquals(2, cm.getContacts(1, 2).size());
-        assertEquals(testSet, cm.getContacts(1, 2));
+        assertEquals(testSet.size(), cm.getContacts(1, 2).size());
+        assertTrue(testSet.containsAll(cm.getContacts(1, 2)));
     }
 
     @Test
@@ -128,7 +166,7 @@ public class ContactManagerImplTest {
         testSet.add(new ContactImpl(1, "Ben", "myNotes"));
         testSet.add(new ContactImpl(3, "Ell", "myNotes"));
         assertEquals(2, cm.getContacts(1, 3).size());
-        assertEquals(testSet, cm.getContacts(1, 3));
+        assertTrue(testSet.containsAll(cm.getContacts(1, 3)));
     }
 
     @Test
