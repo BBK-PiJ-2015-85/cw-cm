@@ -1,7 +1,20 @@
+import java.util.Calendar;
+import java.util.Set;
+
 /**
  * Created by James Pickles on 23/02/2016.
  */
 public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
+    private String meetingNotes;
+
+    public PastMeetingImpl(int id, Calendar date, Set<Contact> attendees, String notes) {
+        super(id, date, attendees);
+        if (notes == null) {
+            throw new NullPointerException("Null parameters cannot be passed to constructor.");
+        }
+        meetingNotes = notes;
+    }
+
     /**
      * Returns the notes from the meeting.
      *
@@ -9,5 +22,7 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
      *
      * @return the notes from the meeting.
      */
-    String getNotes();
+    public String getNotes() {
+        return null;
+    }
 }
