@@ -75,7 +75,6 @@ public class FutureMeetingImplTest {
         assertFalse(new GregorianCalendar(2016, 2, 10).equals(testMeeting.getDate()));
     }
 
-
     @Test
     public void testGetContacts() {
         assertEquals(meetingContacts, testMeeting.getContacts());
@@ -88,4 +87,42 @@ public class FutureMeetingImplTest {
         assertFalse(testSet.equals(testMeeting.getContacts()));
     }
 
+    @Test
+    public void testsTwoMeetingsTheSame() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(ben);
+        testSet.add(jim);
+        Calendar testDate2 = new GregorianCalendar(2015, 2, 10);
+        Meeting testMeeting2 = new FutureMeetingImpl(5, testDate2, testSet);
+        assertEquals(testMeeting2, testMeeting);
+    }
+
+    @Test
+    public void testsDifferentIds() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(ben);
+        testSet.add(jim);
+        Calendar testDate2 = new GregorianCalendar(2015, 2, 10);
+        Meeting testMeeting2 = new FutureMeetingImpl(4, testDate2, testSet);
+        assertEquals(testMeeting2, testMeeting);
+    }
+
+    @Test
+    public void testsDifferentDates() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(ben);
+        testSet.add(jim);
+        Calendar testDate2 = new GregorianCalendar(2015, 2, 11);
+        Meeting testMeeting2 = new FutureMeetingImpl(5, testDate2, testSet);
+        assertEquals(testMeeting2, testMeeting);
+    }
+
+    @Test
+    public void testsDifferentContacts() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(jim);
+        Calendar testDate2 = new GregorianCalendar(2015, 2, 10);
+        Meeting testMeeting2 = new FutureMeetingImpl(5, testDate2, testSet);
+        assertEquals(testMeeting2, testMeeting);
+    }
 }
