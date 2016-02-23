@@ -80,6 +80,18 @@ public class PastMeetingImplTest {
         assertFalse(new GregorianCalendar(2016, 2, 10).equals(testMeeting.getDate()));
     }
 
+    @Test
+    public void testGetContacts() {
+        assertEquals(meetingContacts, testMeeting.getContacts());
+    }
+
+    @Test
+    public void testsWrongSetOfContacts() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(ben);
+        assertFalse(testSet.equals(testMeeting.getContacts()));
+    }
+
     /*
     @Test
     public void testGetNotes() throws Exception {
