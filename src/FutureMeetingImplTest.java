@@ -6,6 +6,9 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 /**
  * Created by James Pickles on 22/02/2016.
  */
@@ -35,7 +38,6 @@ public class FutureMeetingImplTest {
         Calendar date = new GregorianCalendar(2015, 01, 22);
         Meeting meeting1 = new FutureMeetingImpl(3, date, null);
     }
-
     @Test(expected = IllegalArgumentException.class)
     public void testsAddingZeroAsId() {
         Calendar date = new GregorianCalendar(2015, 05, 02);
@@ -53,6 +55,16 @@ public class FutureMeetingImplTest {
         Meeting meeting3 = new FutureMeetingImpl(4, date, emptyTest);
     }
 
+
+    @Test
+    public void testsGetIdOfMeeting() {
+        assertEquals(5, testMeeting.getId());
+    }
+
+    @Test
+    public void testsWrongId() {
+        assertFalse(1 == testMeeting.getId());
+    }
     /*
     @Test
     public void testGetDate() throws Exception {
