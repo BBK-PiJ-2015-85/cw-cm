@@ -1,4 +1,5 @@
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -7,6 +8,13 @@ import java.util.Set;
  */
 
 public class ContactManagerImpl implements ContactManager {
+    private int contactIdCount;
+    private Set<Contact> myContacts;
+
+    public ContactManagerImpl() {
+        contactIdCount = 0;
+        myContacts = new HashSet<>();
+    }
     /**
      * Add a new meeting to be held in the future.
      *
@@ -132,7 +140,15 @@ public class ContactManagerImpl implements ContactManager {
      * @throws NullPointerException if the name or the notes are null
      */
     public int addNewContact(String name, String notes) {
-        return -1;
+        if (name == null || notes == null) {
+            throw new NullPointerException("Arguments must not be null.");
+        }
+        if (name.equals("") || notes.equals("")) {
+            throw new IllegalArgumentException("Name and notes must not be empty strings.");
+        }
+        contactIdCount++;
+        myContacts.add(new ContactImpl(contactIdCount, name, notes));
+        return contactIdCount;
     }
 
     /**
