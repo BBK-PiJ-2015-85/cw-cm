@@ -148,25 +148,18 @@ public class ContactManagerImplTest {
 
     @Test
     public void testsGetTwo() {
-        cm.addNewContact("Ben", "myNotes");
-        cm.addNewContact("Tim", "myNotes");
         Set<Contact> testSet = new HashSet<>();
-        testSet.add(new ContactImpl(1, "Ben", "myNotes"));
-        testSet.add(new ContactImpl(2, "Tim", "myNotes"));
-        assertEquals(testSet.size(), cm.getContacts(1, 2).size());
-        assertTrue(testSet.containsAll(cm.getContacts(1, 2)));
+        testSet = cm2.getContacts(1, 2);
+        assertEquals(2, testSet.size());
+        assertTrue(testSet.containsAll(cm2.getContacts(1, 2)));
     }
 
     @Test
     public void testsGetTwoOutofThree() {
-        cm.addNewContact("Ben", "myNotes");
-        cm.addNewContact("Tim", "myNotes");
-        cm.addNewContact("Ell", "myNotes");
-        Set<Contact> testSet = new HashSet<>();
-        testSet.add(new ContactImpl(1, "Ben", "myNotes"));
-        testSet.add(new ContactImpl(3, "Ell", "myNotes"));
-        assertEquals(2, cm.getContacts(1, 3).size());
-        assertTrue(testSet.containsAll(cm.getContacts(1, 3)));
+        Set<Contact> testSet = cm3.getContacts(1, 3);
+        assertEquals(2, cm3.getContacts(1, 3).size());
+        assertEquals(2, testSet.size());
+        assertTrue(testSet.containsAll(cm3.getContacts(3, 1)));
     }
 
     @Test
@@ -178,6 +171,18 @@ public class ContactManagerImplTest {
         assertEquals(3, testSet.size());
         assertTrue(testSet.containsAll(cm.getContacts(1, 2, 3)));
     }
+
+    @Test
+    public void testsGetThreeContactsDifferentOrder() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet = cm3.getContacts(2, 3, 1);
+        assertEquals(3, testSet.size());
+        assertTrue(testSet.containsAll(cm3.getContacts(1)));
+        assertTrue(testSet.containsAll(cm3.getContacts(2)));
+        assertTrue(testSet.containsAll(cm3.getContacts(3)));
+
+    }
+
 
 
 
