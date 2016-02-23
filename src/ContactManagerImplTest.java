@@ -130,8 +130,7 @@ public class ContactManagerImplTest {
     @Test
     public void testsGetOneContact() {
         cm.addNewContact("Ben", "myNotes");
-        Set<Contact> testSet = new HashSet<>();
-        testSet = cm.getContacts(1);
+        Set<Contact> testSet = cm.getContacts(1);
         assertEquals(1, testSet.size());
         assertTrue(testSet.containsAll(cm.getContacts(1)));
     }
@@ -147,8 +146,7 @@ public class ContactManagerImplTest {
 
     @Test
     public void testsGetTwo() {
-        Set<Contact> testSet = new HashSet<>();
-        testSet = cm2.getContacts(1, 2);
+        Set<Contact> testSet = cm2.getContacts(1, 2);
         assertEquals(2, testSet.size());
         assertTrue(testSet.containsAll(cm2.getContacts(1, 2)));
     }
@@ -173,8 +171,7 @@ public class ContactManagerImplTest {
 
     @Test
     public void testsGetThreeContactsDifferentOrder() {
-        Set<Contact> testSet = new HashSet<>();
-        testSet = cm3.getContacts(2, 3, 1);
+        Set<Contact> testSet = cm3.getContacts(2, 3, 1);
         assertEquals(3, testSet.size());
         assertTrue(testSet.containsAll(cm3.getContacts(1)));
         assertTrue(testSet.containsAll(cm3.getContacts(2)));
@@ -183,8 +180,7 @@ public class ContactManagerImplTest {
 
     @Test
     public void testsAddOneFromGroupOfThree() {
-        Set<Contact> testSet = new HashSet<>();
-        testSet = cm3.getContacts(3);
+        Set<Contact> testSet = cm3.getContacts(3);
         assertEquals(1, testSet.size());
         assertTrue(testSet.containsAll(cm3.getContacts(3)));
         assertFalse(testSet.containsAll(cm3.getContacts(1)));
