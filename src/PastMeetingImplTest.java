@@ -136,4 +136,24 @@ public class PastMeetingImplTest {
         assertFalse(meet2.equals(testMeeting));
     }
 
+    @Test
+    public void testsDifferentDate() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(ben);
+        testSet.add(jim);
+        Calendar testDate2 = new GregorianCalendar(2014, 3, 12);
+        String notes = "testNotes";
+        PastMeeting meet2 = new PastMeetingImpl(2, testDate2, testSet, notes);
+        assertFalse(meet2.equals(testMeeting));
+    }
+
+    @Test
+    public void testsDifferentContactSet() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(ben);
+        Calendar testDate2 = new GregorianCalendar(2014, 3, 11);
+        String notes = "testNotes";
+        PastMeeting meet2 = new PastMeetingImpl(2, testDate2, testSet, notes);
+        assertFalse(meet2.equals(testMeeting));
+    }
 }
