@@ -9,14 +9,12 @@ import java.util.Set;
 /**
  * Created by James Pickles on 22/02/2016.
  */
-public class MeetingImplTest extends MeetingImpl {
+public class FutureMeetingTest {
     Set<Contact> meetingContacts;
     Meeting testMeeting;
     Contact jim, ben;
 
-    public MeetingImplTest(int meetingId, Calendar date, Set<Contact> attendees) {
-        super(meetingId, date, attendees);
-    }
+
     @Before
     public void setUp() {
         jim = new ContactImpl(1, "Jim", "test");
