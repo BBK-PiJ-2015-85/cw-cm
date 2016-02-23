@@ -173,7 +173,23 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalArgumentException if no IDs are provided or if
      * any of the provided IDs does not correspond to a real contact
      */
-    public Set<Contact> getContacts(int... ids) {return null;}
+    public Set<Contact> getContacts(int... ids) {
+        if (ids.length == 0) {
+            throw new IllegalArgumentException("At least one ID must be provided.");
+        }
+        Set<Contact> matchingIds = new HashSet<>();
+        for (int id : ids) {
+            if (id <= 0 || id > contactIdCount) {
+                throw new IllegalArgumentException("ID " + id + " does not correspond to any contact.");
+            }
+            for (Contact c : myContacts) {
+                if (id == c.getId()) {
+                    matchingIds.add(c);
+                }
+            }
+        }
+        return matchingIds;
+    }
 
     /**
      * Save all data to disk.
