@@ -16,7 +16,7 @@ public class PastMeetingImplTest {
     Calendar testDate;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         meetingContacts = new HashSet<>();
         jim = new ContactImpl(1, "Jim", "test");
         ben = new ContactImpl(2, "Ben", "test2");
@@ -41,8 +41,26 @@ public class PastMeetingImplTest {
         Meeting testMeet = new PastMeetingImpl(2, testDate, meetingContacts, null);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testsAddingZeroID() {
+        Meeting tesMeet = new PastMeetingImpl(0, testDate, meetingContacts, "testNotes");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsAddingNegativeID() {
+        Meeting tesMeet = new PastMeetingImpl(-3, testDate, meetingContacts, "testNotes");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsAddingEmptyContactSet() {
+        Set<Contact> emptySet = new HashSet<>();
+        Meeting tesMeet = new PastMeetingImpl(1, testDate, emptySet, "testNotes");
+    }
+
+    /*
     @Test
     public void testGetNotes() throws Exception {
 
     }
+    */
 }
