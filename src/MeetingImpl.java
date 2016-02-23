@@ -30,7 +30,7 @@ public abstract class MeetingImpl implements Meeting {
      * @return the id of the meeting.
      */
     public int getId() {
-        return 0;
+        return meetingId;
     }
 
     /**
