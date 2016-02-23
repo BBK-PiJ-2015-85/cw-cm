@@ -39,7 +39,7 @@ public abstract class MeetingImpl implements Meeting {
      * @return the date of the meeting.
      */
     public Calendar getDate() {
-        return null;
+        return meetingDate;
     }
 
     /**

@@ -77,6 +77,7 @@ public class FutureMeetingImplTest {
         assertFalse(new GregorianCalendar(2016, 02, 10).equals(testMeeting.getDate()));
     }
 
+    /*
     @Test
     public void testGetContacts() throws Exception {
 
