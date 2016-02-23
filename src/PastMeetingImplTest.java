@@ -14,7 +14,7 @@ import static org.junit.Assert.assertFalse;
  */
 public class PastMeetingImplTest {
     Set<Contact> meetingContacts;
-    Meeting testMeeting;
+    PastMeeting testMeeting;
     Contact jim, ben;
     Calendar testDate;
 
@@ -90,6 +90,16 @@ public class PastMeetingImplTest {
         Set<Contact> testSet = new HashSet<>();
         testSet.add(ben);
         assertFalse(testSet.equals(testMeeting.getContacts()));
+    }
+
+    @Test
+    public void testsGetNotes() {
+        assertEquals("testNotes", testMeeting.getNotes());
+    }
+
+    @Test
+    public void testsWrongNotes() {
+        assertFalse("testNote".equals(testMeeting.getNotes()));
     }
 
     /*
