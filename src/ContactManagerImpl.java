@@ -15,6 +15,7 @@ public class ContactManagerImpl implements ContactManager {
         contactIdCount = 0;
         myContacts = new HashSet<>();
     }
+
     /**
      * Add a new meeting to be held in the future.
      *
