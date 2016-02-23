@@ -4,8 +4,7 @@ import org.junit.Test;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by James Pickles on 23/02/2016.
@@ -180,7 +179,17 @@ public class ContactManagerImplTest {
         assertTrue(testSet.containsAll(cm3.getContacts(1)));
         assertTrue(testSet.containsAll(cm3.getContacts(2)));
         assertTrue(testSet.containsAll(cm3.getContacts(3)));
+    }
 
+    @Test
+    public void testsAddOneFromGroupOfThree() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet = cm3.getContacts(3);
+        assertEquals(1, testSet.size());
+        assertTrue(testSet.containsAll(cm3.getContacts(3)));
+        assertFalse(testSet.containsAll(cm3.getContacts(1)));
+        assertFalse(testSet.containsAll(cm3.getContacts(2)));
+        assertFalse(testSet.containsAll(cm3.getContacts(1, 2, 3)));
     }
 
 
