@@ -8,6 +8,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by James Pickles on 23/02/2016.
@@ -100,6 +101,17 @@ public class PastMeetingImplTest {
     @Test
     public void testsWrongNotes() {
         assertFalse("testNote".equals(testMeeting.getNotes()));
+    }
+
+    @Test
+    public void testsTwoMeetingSame() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(ben);
+        testSet.add(jim);
+        Calendar testDate2 = new GregorianCalendar(2014, 3, 11);
+        String notes = "testNotes";
+        PastMeeting meet2 = new PastMeetingImpl(2, testDate2, testSet, notes);
+        assertTrue(meet2.equals(testMeeting));
     }
 
     /*
