@@ -6,6 +6,9 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 /**
  * Created by James Pickles on 23/02/2016.
  */
@@ -57,6 +60,15 @@ public class PastMeetingImplTest {
         Meeting tesMeet = new PastMeetingImpl(1, testDate, emptySet, "testNotes");
     }
 
+    @Test
+    public void testsGetMeetingId() {
+        assertEquals(2, testMeeting.getId());
+    }
+
+    @Test
+    public void testsWrongId() {
+        assertFalse(1 == testMeeting.getId());
+    }
     /*
     @Test
     public void testGetNotes() throws Exception {
