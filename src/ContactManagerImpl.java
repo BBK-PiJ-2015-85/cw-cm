@@ -20,7 +20,7 @@ public class ContactManagerImpl implements ContactManager {
      * in the past, of if any contact is unknown / non-existent.
      * @throws NullPointerException if the meeting or the date are null
      */
-    int addFutureMeeting(Set<Contact> contacts, Calendar date);
+    public int addFutureMeeting(Set<Contact> contacts, Calendar date) {return -1;}
 
     /**
      * Returns the PAST meeting with the requested ID, or null if it there is none.
@@ -32,7 +32,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalStateException if there is a meeting with that ID happening
      * in the future
      */
-    PastMeeting getPastMeeting(int id);
+    public PastMeeting getPastMeeting(int id) {return null;}
 
     /**
      * Returns the FUTURE meeting with the requested ID, or null if there is none.
@@ -42,7 +42,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalArgumentException if there is a meeting with that ID happening
      * in the past
      */
-    FutureMeeting getFutureMeeting(int id);
+    public FutureMeeting getFutureMeeting(int id) {return null;}
 
     /**
      * Returns the meeting with the requested ID, or null if it there is none.
@@ -50,7 +50,7 @@ public class ContactManagerImpl implements ContactManager {
      * @param id the ID for the meeting
      * @return the meeting with the requested ID, or null if it there is none.
      */
-    Meeting getMeeting(int id);
+    public Meeting getMeeting(int id) {return null;}
 
     /**
      * Returns the list of future meetings scheduled with this contact.
@@ -64,7 +64,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalArgumentException if the contact does not exist
      * @throws NullPointerException if the contact is null
      */
-    List<Meeting> getFutureMeetingList(Contact contact);
+    public List<Meeting> getFutureMeetingList(Contact contact) {return null;}
 
     /**
      * Returns the list of meetings that are scheduled for, or that took
@@ -78,7 +78,7 @@ public class ContactManagerImpl implements ContactManager {
      * @return the list of meetings
      * @throws NullPointerException if the date are null
      */
-    List<Meeting> getMeetingListOn(Calendar date);
+    public List<Meeting> getMeetingListOn(Calendar date) {return null;}
 
     /**
      * Returns the list of past meetings in which this contact has participated.
@@ -92,7 +92,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalArgumentException if the contact does not exist
      * @throws NullPointerException if the contact is null
      */
-    List<PastMeeting> getPastMeetingListFor(Contact contact);
+    public List<PastMeeting> getPastMeetingListFor(Contact contact) {return null;}
 
     /**
      * Create a new record for a meeting that took place in the past.
@@ -104,7 +104,7 @@ public class ContactManagerImpl implements ContactManager {
      *empty, or any of the contacts does not exist
      * @throws NullPointerException if any of the arguments is null
      */
-    void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text);
+    public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {}
 
     /**
      * Add notes to a meeting.
@@ -120,7 +120,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalStateException if the meeting is set for a date in the future
      * @throws NullPointerException if the notes are null
      */
-    PastMeeting addMeetingNotes(int id, String text);
+    public PastMeeting addMeetingNotes(int id, String text) {return null;}
 
     /**
      * Create a new contact with the specified name and notes.
@@ -131,7 +131,9 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalArgumentException if the name or the notes are empty strings
      * @throws NullPointerException if the name or the notes are null
      */
-    int addNewContact(String name, String notes);
+    public int addNewContact(String name, String notes) {
+        return -1;
+    }
 
     /**
      * Returns a list with the contacts whose name contains that string.
@@ -143,7 +145,7 @@ public class ContactManagerImpl implements ContactManager {
      * @return a list with the contacts whose name contains that string.
      * @throws NullPointerException if the parameter is null
      */
-    Set<Contact> getContacts(String name);
+    public Set<Contact> getContacts(String name) {return null;}
 
     /**
      * Returns a list containing the contacts that correspond to the IDs.
@@ -154,7 +156,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalArgumentException if no IDs are provided or if
      * any of the provided IDs does not correspond to a real contact
      */
-    Set<Contact> getContacts(int... ids);
+    public Set<Contact> getContacts(int... ids) {return null;}
 
     /**
      * Save all data to disk.
@@ -162,5 +164,5 @@ public class ContactManagerImpl implements ContactManager {
      * This method must be executed when the program is
      * closed and when/if the user requests it.
      */
-    void flush();
+    public void flush() {}
 }
