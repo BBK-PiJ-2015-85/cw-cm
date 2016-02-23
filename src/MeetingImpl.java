@@ -54,4 +54,13 @@ public abstract class MeetingImpl implements Meeting {
     public Set<Contact> getContacts() {
         return meetingAttendees;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        MeetingImpl that = (MeetingImpl) other;
+        return (other instanceof MeetingImpl) &&
+                this.meetingId == that.meetingId &&
+                this.meetingAttendees.equals(that.meetingAttendees) &&
+                this.meetingDate.equals(that.meetingDate);
+    }
 }

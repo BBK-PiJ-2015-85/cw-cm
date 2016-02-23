@@ -8,6 +8,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by James Pickles on 22/02/2016.
@@ -16,7 +17,7 @@ public class FutureMeetingImplTest {
     Set<Contact> meetingContacts;
     Meeting testMeeting;
     Contact jim, ben;
-
+    Calendar testDate;
 
     @Before
     public void setUp() {
@@ -25,7 +26,7 @@ public class FutureMeetingImplTest {
         meetingContacts = new HashSet<>();
         meetingContacts.add(jim);
         meetingContacts.add(ben);
-        Calendar testDate = new GregorianCalendar(2015, 2, 10);
+        testDate = new GregorianCalendar(2015, 2, 10);
         testMeeting = new FutureMeetingImpl(5, testDate, meetingContacts);
     }
 
@@ -93,8 +94,8 @@ public class FutureMeetingImplTest {
         testSet.add(ben);
         testSet.add(jim);
         Calendar testDate2 = new GregorianCalendar(2015, 2, 10);
-        Meeting testMeeting2 = new FutureMeetingImpl(5, testDate2, testSet);
-        assertEquals(testMeeting2, testMeeting);
+        Meeting testMeet = new FutureMeetingImpl(5, testDate2, testSet);
+        assertTrue(testMeet.equals(testMeeting));
     }
 
     @Test
@@ -104,7 +105,7 @@ public class FutureMeetingImplTest {
         testSet.add(jim);
         Calendar testDate2 = new GregorianCalendar(2015, 2, 10);
         Meeting testMeeting2 = new FutureMeetingImpl(4, testDate2, testSet);
-        assertEquals(testMeeting2, testMeeting);
+        assertFalse(testMeeting2.equals(testMeeting));
     }
 
     @Test
@@ -114,7 +115,7 @@ public class FutureMeetingImplTest {
         testSet.add(jim);
         Calendar testDate2 = new GregorianCalendar(2015, 2, 11);
         Meeting testMeeting2 = new FutureMeetingImpl(5, testDate2, testSet);
-        assertEquals(testMeeting2, testMeeting);
+        assertFalse(testMeeting2.equals(testMeeting));
     }
 
     @Test
@@ -123,6 +124,6 @@ public class FutureMeetingImplTest {
         testSet.add(jim);
         Calendar testDate2 = new GregorianCalendar(2015, 2, 10);
         Meeting testMeeting2 = new FutureMeetingImpl(5, testDate2, testSet);
-        assertEquals(testMeeting2, testMeeting);
+        assertFalse(testMeeting2.equals(testMeeting));
     }
 }
