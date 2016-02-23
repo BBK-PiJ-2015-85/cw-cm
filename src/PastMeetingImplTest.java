@@ -69,6 +69,17 @@ public class PastMeetingImplTest {
     public void testsWrongId() {
         assertFalse(1 == testMeeting.getId());
     }
+
+    @Test
+    public void testGetDate() {
+        assertEquals(new GregorianCalendar(2014, 3, 11), testMeeting.getDate());
+    }
+
+    @Test
+    public void testsWrongDate() {
+        assertFalse(new GregorianCalendar(2016, 2, 10).equals(testMeeting.getDate()));
+    }
+
     /*
     @Test
     public void testGetNotes() throws Exception {
