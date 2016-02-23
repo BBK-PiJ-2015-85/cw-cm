@@ -55,7 +55,6 @@ public class FutureMeetingImplTest {
         Meeting meeting3 = new FutureMeetingImpl(4, date, emptyTest);
     }
 
-
     @Test
     public void testsGetIdOfMeeting() {
         assertEquals(5, testMeeting.getId());
@@ -65,7 +64,6 @@ public class FutureMeetingImplTest {
     public void testsWrongId() {
         assertFalse(1 == testMeeting.getId());
     }
-
 
     @Test
     public void testGetDate() {
@@ -77,10 +75,17 @@ public class FutureMeetingImplTest {
         assertFalse(new GregorianCalendar(2016, 02, 10).equals(testMeeting.getDate()));
     }
 
-    /*
-    @Test
-    public void testGetContacts() throws Exception {
 
+    @Test
+    public void testGetContacts() {
+        assertEquals(meetingContacts, testMeeting.getContacts());
     }
-    */
+
+    @Test
+    public void testsWrongSetOfContacts() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(ben);
+        assertFalse(testSet.equals(testMeeting.getContacts()));
+    }
+
 }
