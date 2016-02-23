@@ -25,4 +25,12 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
     public String getNotes() {
         return meetingNotes;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        PastMeetingImpl that = (PastMeetingImpl) other;
+        return (other instanceof PastMeetingImpl) &&
+                super.equals((MeetingImpl) other) &&
+                this.meetingNotes.equals(that.meetingNotes);
+    }
 }

@@ -114,6 +114,7 @@ public class PastMeetingImplTest {
         assertTrue(meet2.equals(testMeeting));
     }
 
+
     /*
     @Test
     public void testGetNotes() throws Exception {
