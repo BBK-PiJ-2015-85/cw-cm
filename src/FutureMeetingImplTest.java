@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Created by James Pickles on 22/02/2016.
  */
-public class FutureMeetingTest {
+public class FutureMeetingImplTest {
     Set<Contact> meetingContacts;
     Meeting testMeeting;
     Contact jim, ben;
@@ -23,34 +23,34 @@ public class FutureMeetingTest {
         meetingContacts.add(jim);
         meetingContacts.add(ben);
         Calendar testDate = new GregorianCalendar(2015, 02, 10);
-        testMeeting = new MeetingImplTest(5, testDate, meetingContacts);
+        testMeeting = new FutureMeetingImpl(5, testDate, meetingContacts);
     }
 
     @Test(expected = NullPointerException.class)
     public void testsNullParameter() {
-        Meeting meeting1 = new MeetingImplTest(3, null, meetingContacts);
+        Meeting meeting1 = new FutureMeetingImpl(3, null, meetingContacts);
     }
     @Test(expected = NullPointerException.class)
     public void testsDifferentNullParameter() {
         Calendar date = new GregorianCalendar(2015, 01, 22);
-        Meeting meeting1 = new MeetingImplTest(3, date, null);
+        Meeting meeting1 = new FutureMeetingImpl(3, date, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testsAddingZeroAsId() {
         Calendar date = new GregorianCalendar(2015, 05, 02);
-        Meeting meeting1 = new MeetingImplTest(0, date, meetingContacts);
+        Meeting meeting1 = new FutureMeetingImpl(0, date, meetingContacts);
     }
     @Test(expected = IllegalArgumentException.class)
     public void testsAddingNegativeAsId() {
         Calendar date = new GregorianCalendar(2015, 04, 20);
-        Meeting meeting2 = new MeetingImplTest(-5, date, meetingContacts);
+        Meeting meeting2 = new FutureMeetingImpl(-5, date, meetingContacts);
     }
     @Test(expected = IllegalArgumentException.class)
     public void testsAddingEmptySet() {
         Calendar date = new GregorianCalendar(2016, 12, 11);
         Set<Contact> emptyTest = new HashSet<>();
-        Meeting meeting3 = new MeetingImplTest(4, date, emptyTest);
+        Meeting meeting3 = new FutureMeetingImpl(4, date, emptyTest);
     }
 
     /*
