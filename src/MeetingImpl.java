@@ -14,7 +14,7 @@ public abstract class MeetingImpl implements Meeting {
             throw new IllegalArgumentException("Meeting ID must be a non zero positive integer.");
         }
         if (date == null || attendees == null) {
-            throw new NullPointerException("Null parameters cannot be passed to cnostructor.");
+            throw new NullPointerException("Null parameters cannot be passed to constructor.");
         }
         if (attendees.isEmpty()) {
             throw new IllegalArgumentException("Set of contacts must not be empty.");
