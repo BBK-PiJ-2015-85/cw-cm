@@ -78,4 +78,15 @@ public class ContactImpl implements Contact {
             contactNotes += "; " + note;
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ContactImpl)) {
+            return false;
+        }
+        ContactImpl that = (ContactImpl) other;
+        return this.getId() == that.getId() &&
+               this.getName().equals(that.getName()) &&
+               this.getNotes().equals(that.getNotes());
+    }
 }

@@ -116,14 +116,14 @@ public class ContactManagerImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testsIdProvidedDoesNotExist() {
-        cm.addNewContact("Ben", "noetes");
+        cm.addNewContact("Ben", "notes");
         cm.getContacts(2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testsTwoValidIdsButOneInvalid() {
-        cm.addNewContact("Ben", "noetes");
-        cm.addNewContact("Tim", "noetes1");
+        cm.addNewContact("Ben", "notes");
+        cm.addNewContact("Tim", "notes1");
         cm.getContacts(1, 2, 3);
     }
 
@@ -149,14 +149,20 @@ public class ContactManagerImplTest {
         Set<Contact> testSet = cm2.getContacts(1, 2);
         assertEquals(2, testSet.size());
         assertTrue(testSet.containsAll(cm2.getContacts(1, 2)));
+        for (Contact c : testSet) {
+            assertTrue(c.equals(con1) || c.equals(con2));
+        }
     }
 
     @Test
-    public void testsGetTwoOutofThree() {
+    public void testsGetTwoOutOfThree() {
         Set<Contact> testSet = cm3.getContacts(1, 3);
         assertEquals(2, cm3.getContacts(1, 3).size());
         assertEquals(2, testSet.size());
         assertTrue(testSet.containsAll(cm3.getContacts(3, 1)));
+        for (Contact c : testSet) {
+            assertTrue(c.equals(con1) || c.equals(con3));
+        }
     }
 
     @Test
@@ -176,6 +182,9 @@ public class ContactManagerImplTest {
         assertTrue(testSet.containsAll(cm3.getContacts(1)));
         assertTrue(testSet.containsAll(cm3.getContacts(2)));
         assertTrue(testSet.containsAll(cm3.getContacts(3)));
+        for (Contact c : testSet) {
+            assertTrue(c.equals(con1) || c.equals(con2) || c.equals(con3));
+        }
     }
 
     @Test
@@ -186,7 +195,27 @@ public class ContactManagerImplTest {
         assertFalse(testSet.containsAll(cm3.getContacts(1)));
         assertFalse(testSet.containsAll(cm3.getContacts(2)));
         assertFalse(testSet.containsAll(cm3.getContacts(1, 2, 3)));
+        for (Contact c : testSet) {
+            assertTrue(c.equals(con3));
+        }
     }
+
+    /**
+     * Test getContact(String)
+     */
+
+    /*
+    @Test(expected = NullPointerException.class)
+    public void testsNullAsArgument() {
+        String strNull = null;
+        cm1.getContacts(strNull);
+    }
+
+    @Test
+    public void testGetOneContact() {
+
+    }
+    */
 
 
 

@@ -57,10 +57,12 @@ public abstract class MeetingImpl implements Meeting {
 
     @Override
     public boolean equals(Object other) {
+        if (!(other instanceof MeetingImpl)) {
+            return false;
+        }
         MeetingImpl that = (MeetingImpl) other;
-        return (other instanceof MeetingImpl) &&
-                this.meetingId == that.meetingId &&
-                this.meetingAttendees.equals(that.meetingAttendees) &&
-                this.meetingDate.equals(that.meetingDate);
+        return this.meetingId == that.meetingId &&
+               this.meetingAttendees.equals(that.meetingAttendees) &&
+               this.meetingDate.equals(that.meetingDate);
     }
 }

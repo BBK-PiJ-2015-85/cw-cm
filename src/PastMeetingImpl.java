@@ -28,9 +28,11 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 
     @Override
     public boolean equals(Object other) {
+        if (!(other instanceof PastMeetingImpl)) {
+            return false;
+        }
         PastMeetingImpl that = (PastMeetingImpl) other;
-        return (other instanceof PastMeetingImpl) &&
-                super.equals((MeetingImpl) other) &&
-                this.meetingNotes.equals(that.meetingNotes);
+        return super.equals((MeetingImpl) other) &&
+               this.meetingNotes.equals(that.meetingNotes);
     }
 }
