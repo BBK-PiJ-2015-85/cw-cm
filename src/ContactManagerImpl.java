@@ -164,7 +164,7 @@ public class ContactManagerImpl implements ContactManager {
      */
     public Set<Contact> getContacts(String name) {
         if (name == null) {
-            throw new NullPointerException("String name cannot be null");
+            throw new NullPointerException("String name cannot be null.");
         }
         Set<Contact> matchingNames = new HashSet<>();
         for (Contact c : myContacts) {

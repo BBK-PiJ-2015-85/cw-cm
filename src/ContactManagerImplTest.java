@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ public class ContactManagerImplTest {
     ContactManager cm, cm1, cm2, cm3;
     Set<Contact> testSet1, testSet2, testSet3;
     Contact con1, con2, con3;
+    Calendar current, currentPlus1Min, currentPlus1Hour, currentPlus1Day, currentPlus1Month, currentPlus1Year;
 
     @Before
     public void setUp() {
@@ -51,6 +54,21 @@ public class ContactManagerImplTest {
         cm3.addNewContact("Con1", "test contact 1");
         cm3.addNewContact("Con2", "test contact 2");
         cm3.addNewContact("Con3", "test contact 3");
+
+        //create a time in sync with system time to use during testing
+        //so that tests will also work in the future
+        current = new GregorianCalendar();
+        currentPlus1Min = new GregorianCalendar();
+        currentPlus1Hour = new GregorianCalendar();
+        currentPlus1Day = new GregorianCalendar();
+        currentPlus1Month = new GregorianCalendar();
+        currentPlus1Year = new GregorianCalendar();
+        currentPlus1Min.roll(Calendar.MINUTE, true);
+        currentPlus1Hour.roll(Calendar.HOUR, true);
+        currentPlus1Day.roll(Calendar.DAY_OF_WEEK, true);
+        currentPlus1Month.roll(Calendar.MONTH, true);
+        currentPlus1Year.roll(Calendar.YEAR, true);
+
 
     }
 
@@ -296,6 +314,18 @@ public class ContactManagerImplTest {
         Set<Contact> testSet = cm.getContacts("");
         assertTrue(testSet.isEmpty());
     }
+
+    /**
+     * Test addFutureMeeting()
+     */
+
+    /*
+    @Test(expected = NullPointerException.class) {
+        public void testsNullDatePassed() {
+            cm1.addFutureMeeting(testSet1, )
+        }
+    }
+    */
 
 
 
