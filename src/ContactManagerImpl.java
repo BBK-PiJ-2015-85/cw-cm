@@ -162,7 +162,18 @@ public class ContactManagerImpl implements ContactManager {
      * @return a list with the contacts whose name contains that string.
      * @throws NullPointerException if the parameter is null
      */
-    public Set<Contact> getContacts(String name) {return null;}
+    public Set<Contact> getContacts(String name) {
+        if (name == null) {
+            throw new NullPointerException("String name cannot be null");
+        }
+        Set<Contact> matchingNames = new HashSet<>();
+        for (Contact c : myContacts) {
+            if (c.getName().toLowerCase().contains(name.toLowerCase())) {
+                matchingNames.add(c);
+            }
+        }
+        return matchingNames;
+    }
 
     /**
      * Returns a list containing the contacts that correspond to the IDs.
