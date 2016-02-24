@@ -204,7 +204,7 @@ public class ContactManagerImplTest {
      * Test getContact(String)
      */
 
-    /*
+
     @Test(expected = NullPointerException.class)
     public void testsNullAsArgument() {
         String strNull = null;
@@ -213,9 +213,90 @@ public class ContactManagerImplTest {
 
     @Test
     public void testGetOneContact() {
-
+        Set<Contact> testSet = cm3.getContacts("Con3");
+        assertEquals(1, testSet.size());
+        assertTrue(testSet.containsAll(cm3.getContacts("Con3")));
+        for (Contact c : testSet) {
+            assertEquals("Con3", c.getName());
+            assertEquals(c, con3);
+        }
     }
-    */
+
+    @Test
+    public void testsGetOneContactLowerCase() {
+        Set<Contact> testSet = cm2.getContacts("con2");
+        assertEquals(1, testSet.size());
+        assertTrue(testSet.containsAll(cm2.getContacts("con2")));
+        for (Contact c : testSet) {
+            assertEquals("Con2", c.getName());
+            assertEquals(c, con2);
+        }
+    }
+
+    @Test
+    public void testsGetAllContacts() {
+        Set<Contact> testSet = cm3.getContacts("");
+        assertEquals(3, testSet.size());
+        assertTrue(testSet.containsAll(cm3.getContacts("")));
+        for (Contact c : testSet) {
+            assertTrue(c.getId() == 1 || c.getId() == 2 || c.getId() == 3);
+            assertTrue(c.equals(con1) || c.equals(con2) || c.equals(con3));
+        }
+    }
+
+    @Test
+    public void testsPartialName() {
+        Set<Contact> testSet = cm3.getContacts("con");
+        assertEquals(3, testSet.size());
+        assertTrue(testSet.containsAll(cm3.getContacts("con")));
+        for (Contact c : testSet) {
+            assertTrue(c.getNotes().equals("test contact 1") || c.getNotes().equals("test contact 2") || c.getNotes().equals("test contact 3"));
+            assertTrue(c.equals(con1) || c.equals(con2) || c.equals(con3));
+        }
+    }
+
+    @Test
+    public void testsFirstLetterOnly() {
+        Set<Contact> testSet = cm3.getContacts("c");
+        assertEquals(3, testSet.size());
+        assertTrue(testSet.containsAll(cm3.getContacts("c")));
+        for (Contact c : testSet) {
+            assertTrue(c.equals(con1) || c.equals(con2) || c.equals(con3));
+        }
+    }
+
+    //for now assuming that we return an empty list if no matches are found
+    @Test
+    public void testsNameNotInContacts() {
+        Set<Contact> testSet = cm3.getContacts("fake contact");
+        assertTrue(testSet.isEmpty());
+    }
+
+    @Test
+    public void testsGettingContactWithSpaces() {
+        cm3.addNewContact("Joe Bloggs", "test");
+        Set<Contact> testSet = cm3.getContacts("joe b");
+        assertEquals(1, testSet.size());
+        assertTrue(testSet.containsAll(cm3.getContacts("joe b")));
+        for (Contact c : testSet) {
+            assertEquals("Joe Bloggs", c.getName());
+            assertEquals(4, c.getId());
+        }
+    }
+
+    //assuming that when there are no contacts an empty list is returned
+    @Test
+    public void testsSearchingForContactButNoContacts() {
+        Set<Contact> testSet = cm.getContacts("Mike");
+        assertTrue(testSet.isEmpty());
+    }
+
+    @Test
+    public void testsSearchForAllContactsButNoContacts() {
+        Set<Contact> testSet = cm.getContacts("");
+        assertTrue(testSet.isEmpty());
+    }
+
 
 
 
