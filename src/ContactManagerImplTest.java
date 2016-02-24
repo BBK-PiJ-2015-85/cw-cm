@@ -15,7 +15,8 @@ public class ContactManagerImplTest {
     ContactManager cm, cm1, cm2, cm3;
     Set<Contact> testSet1, testSet2, testSet3;
     Contact con1, con2, con3;
-    Calendar current, currentPlus1Min, currentPlus1Hour, currentPlus1Day, currentPlus1Month, currentPlus1Year;
+    Calendar current, plus1Sec, plus1Min, plus1Hour, plus1Day, plus1Month, plus1Year,
+             minus1Min, minus1Sec, minus1Hour, minus1Day, minus1Month, minus1Year;
 
     @Before
     public void setUp() {
@@ -58,18 +59,30 @@ public class ContactManagerImplTest {
         //create a time in sync with system time to use during testing
         //so that tests will also work in the future
         current = new GregorianCalendar();
-        currentPlus1Min = new GregorianCalendar();
-        currentPlus1Hour = new GregorianCalendar();
-        currentPlus1Day = new GregorianCalendar();
-        currentPlus1Month = new GregorianCalendar();
-        currentPlus1Year = new GregorianCalendar();
-        currentPlus1Min.roll(Calendar.MINUTE, true);
-        currentPlus1Hour.roll(Calendar.HOUR, true);
-        currentPlus1Day.roll(Calendar.DAY_OF_WEEK, true);
-        currentPlus1Month.roll(Calendar.MONTH, true);
-        currentPlus1Year.roll(Calendar.YEAR, true);
-
-
+        plus1Sec = new GregorianCalendar();
+        minus1Sec = new GregorianCalendar();
+        plus1Min = new GregorianCalendar();
+        plus1Hour = new GregorianCalendar();
+        plus1Day = new GregorianCalendar();
+        plus1Month = new GregorianCalendar();
+        plus1Year = new GregorianCalendar();
+        minus1Min = new GregorianCalendar();
+        minus1Hour = new GregorianCalendar();
+        minus1Day = new GregorianCalendar();
+        minus1Month = new GregorianCalendar();
+        minus1Year = new GregorianCalendar();
+        plus1Sec.roll(Calendar.SECOND, true);
+        plus1Min.roll(Calendar.MINUTE, true);
+        plus1Hour.roll(Calendar.HOUR, true);
+        plus1Day.roll(Calendar.DAY_OF_WEEK, true);
+        plus1Month.roll(Calendar.MONTH, true);
+        plus1Year.roll(Calendar.YEAR, true);
+        minus1Sec.roll(Calendar.SECOND, false);
+        minus1Min.roll(Calendar.MINUTE, false);
+        minus1Hour.roll(Calendar.HOUR, false);
+        minus1Day.roll(Calendar.DAY_OF_WEEK, false);
+        minus1Month.roll(Calendar.MONTH, false);
+        minus1Year.roll(Calendar.YEAR, false);
     }
 
     /**
@@ -319,13 +332,46 @@ public class ContactManagerImplTest {
      * Test addFutureMeeting()
      */
 
-    /*
-    @Test(expected = NullPointerException.class) {
-        public void testsNullDatePassed() {
-            cm1.addFutureMeeting(testSet1, )
-        }
+    @Test(expected = NullPointerException.class)
+    public void testsNullDatePassed() {
+        cm1.addFutureMeeting(testSet1,null);
     }
-    */
+
+    @Test(expected = NullPointerException.class)
+    public void testsNullContactSetPassed() {
+        cm1.addFutureMeeting(null, plus1Day);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsPastDate1Second() {
+        cm1.addFutureMeeting(testSet1, minus1Sec);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsPastDate1Minute() {
+        cm1.addFutureMeeting(testSet1, minus1Min);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsPastDate1Hour() {
+        cm1.addFutureMeeting(testSet1, minus1Hour);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsPastDate1Day() {
+        cm1.addFutureMeeting(testSet1, minus1Day);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsPastDate1Month() {
+        cm1.addFutureMeeting(testSet1, minus1Month);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsPastDate1Year() {
+        cm1.addFutureMeeting(testSet1, minus1Year);
+    }
+
 
 
 
