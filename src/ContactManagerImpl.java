@@ -1,7 +1,4 @@
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by James Pickles on 23/02/2016.
@@ -9,11 +6,16 @@ import java.util.Set;
 
 public class ContactManagerImpl implements ContactManager {
     private int contactIdCount;
+    private int meetingIdCount;
     private Set<Contact> myContacts;
+    private Set<Meeting> futureMeetings;
 
     public ContactManagerImpl() {
         contactIdCount = 0;
+        meetingIdCount = 0;
         myContacts = new HashSet<>();
+        futureMeetings = new HashSet<>();
+
     }
 
     /**
@@ -29,7 +31,21 @@ public class ContactManagerImpl implements ContactManager {
      * in the past, of if any contact is unknown / non-existent.
      * @throws NullPointerException if the meeting or the date are null
      */
-    public int addFutureMeeting(Set<Contact> contacts, Calendar date) {return -1;}
+    public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
+        if (contacts == null || date == null) {
+            throw new IllegalArgumentException("Contacts and date must not be null.");
+        }
+        Calendar currentDate = new GregorianCalendar();
+        if (!date.after(currentDate)) {
+            throw new IllegalArgumentException("Date must be in the future.");
+        }
+        if (!myContacts.containsAll(contacts)) {
+            throw new IllegalArgumentException("Unknown contacts cannot be added to meetings.");
+        }
+        meetingIdCount++;
+        futureMeetings.add(new FutureMeetingImpl(meetingIdCount, date, contacts));
+        return meetingIdCount;
+    }
 
     /**
      * Returns the PAST meeting with the requested ID, or null if it there is none.
