@@ -33,7 +33,7 @@ public class ContactManagerImpl implements ContactManager {
      */
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
         if (contacts == null || date == null) {
-            throw new IllegalArgumentException("Contacts and date must not be null.");
+            throw new NullPointerException("Contacts and date must not be null.");
         }
         Calendar currentDate = new GregorianCalendar();
         if (!date.after(currentDate)) {

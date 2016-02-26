@@ -80,13 +80,12 @@ public class ContactImpl implements Contact {
     }
 
     @Override
+    public int hashCode() {
+        return getId();
+    }
+
+    @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ContactImpl)) {
-            return false;
-        }
-        ContactImpl that = (ContactImpl) other;
-        return this.getId() == that.getId() &&
-               this.getName().equals(that.getName()) &&
-               this.getNotes().equals(that.getNotes());
+        return other instanceof ContactImpl && this.hashCode() == other.hashCode();
     }
 }

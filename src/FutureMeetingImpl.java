@@ -9,4 +9,14 @@ public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting  {
     public FutureMeetingImpl(int id, Calendar date, Set<Contact> attendees) {
         super(id, date, attendees);
     }
+
+    @Override
+    public int hashCode() {
+        return this.getId();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof FutureMeetingImpl && this.hashCode() == other.hashCode();
+    }
 }

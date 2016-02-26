@@ -17,7 +17,7 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 
     /**
      * Returns the notes from the meeting.
-     *
+     * <p>
      * If there are no notes, the empty string is returned.
      *
      * @return the notes from the meeting.
@@ -27,12 +27,12 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
     }
 
     @Override
+    public int hashCode() {
+        return this.getId();
+    }
+
+    @Override
     public boolean equals(Object other) {
-        if (!(other instanceof PastMeetingImpl)) {
-            return false;
-        }
-        PastMeetingImpl that = (PastMeetingImpl) other;
-        return super.equals((MeetingImpl) other) &&
-               this.meetingNotes.equals(that.meetingNotes);
+        return other instanceof PastMeetingImpl && this.hashCode() == other.hashCode();
     }
 }

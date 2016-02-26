@@ -390,6 +390,7 @@ public class ContactManagerImplTest {
         cm2.addFutureMeeting(testSet3, plus1Year);
     }
 
+
     @Test
     public void testsCorrectIdReturned() {
         int result = cm1.addFutureMeeting(testSet1, plus1Year);
