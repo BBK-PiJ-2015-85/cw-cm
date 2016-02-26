@@ -372,6 +372,72 @@ public class ContactManagerImplTest {
         cm1.addFutureMeeting(testSet1, minus1Year);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testsEmptySetOfContacts() {
+        Set<Contact> empty = new HashSet<>();
+        cm3.addFutureMeeting(empty, plus1Month);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsUnknownContact() {
+        Set<Contact> testSet = new HashSet<>();
+        testSet.add(new ContactImpl(1, "Test", "notes"));
+        cm.addFutureMeeting(testSet, plus1Year);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsSetWithUnknownContact() {
+        cm2.addFutureMeeting(testSet3, plus1Year);
+    }
+
+    @Test
+    public void testsCorrectIdReturned() {
+        int result = cm1.addFutureMeeting(testSet1, plus1Year);
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void testsNextIdCorrect() {
+        int result = cm1.addFutureMeeting(testSet1, plus1Month);
+        assertEquals(2, result);
+    }
+
+    @Test
+    public void testsThirdIdCorrect() {
+        int result = cm1.addFutureMeeting(testSet1, plus1Day);
+        assertEquals(3, result);
+    }
+
+    @Test
+    public void testsOneSecondAhead() {
+        int result = cm1.addFutureMeeting(testSet1, plus1Sec);
+        assertEquals(4, result);
+    }
+
+    @Test
+    public void tests1HourAhead() {
+        int result = cm1.addFutureMeeting(testSet1, plus1Hour);
+        assertEquals(5, result);
+    }
+
+    @Test
+    public void tests1MinuteAhead() {
+        int result = cm1.addFutureMeeting(testSet1, plus1Min);
+        assertEquals(6, result);
+    }
+
+    @Test
+    public void tests2ContactSet() {
+        int result = cm2.addFutureMeeting(testSet2, plus1Month);
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void tests3ContactSet() {
+        int result = cm3.addFutureMeeting(testSet3, plus1Day);
+        assertEquals(1, result);
+    }
+
 
 
 
