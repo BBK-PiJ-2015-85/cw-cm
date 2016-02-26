@@ -6,9 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by James Pickles on 22/02/2016.
@@ -119,7 +117,7 @@ public class FutureMeetingImplTest {
         testSet.add(jim);
         Calendar testDate2 = new GregorianCalendar(2015, 2, 11);
         Meeting testMeeting2 = new FutureMeetingImpl(5, testDate2, testSet);
-        assertFalse(testMeeting2.equals(testMeeting));
+        assertFalse(testMeeting2.getDate().equals(testMeeting.getDate()));
     }
 
     @Test
@@ -128,6 +126,6 @@ public class FutureMeetingImplTest {
         testSet.add(jim);
         Calendar testDate2 = new GregorianCalendar(2015, 2, 10);
         Meeting testMeeting2 = new FutureMeetingImpl(5, testDate2, testSet);
-        assertFalse(testMeeting2.equals(testMeeting));
+        assertFalse(testMeeting2.getContacts().equals(testMeeting.getContacts()));
     }
 }

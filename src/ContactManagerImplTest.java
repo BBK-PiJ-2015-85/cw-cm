@@ -399,12 +399,15 @@ public class ContactManagerImplTest {
 
     @Test
     public void testsNextIdCorrect() {
+        cm1.addFutureMeeting(testSet1, plus1Year);
         int result = cm1.addFutureMeeting(testSet1, plus1Month);
         assertEquals(2, result);
     }
 
     @Test
     public void testsThirdIdCorrect() {
+        cm1.addFutureMeeting(testSet1, plus1Year);
+        cm1.addFutureMeeting(testSet1, plus1Month);
         int result = cm1.addFutureMeeting(testSet1, plus1Day);
         assertEquals(3, result);
     }
@@ -412,19 +415,19 @@ public class ContactManagerImplTest {
     @Test
     public void testsOneSecondAhead() {
         int result = cm1.addFutureMeeting(testSet1, plus1Sec);
-        assertEquals(4, result);
+        assertEquals(1, result);
     }
 
     @Test
     public void tests1HourAhead() {
         int result = cm1.addFutureMeeting(testSet1, plus1Hour);
-        assertEquals(5, result);
+        assertEquals(1, result);
     }
 
     @Test
     public void tests1MinuteAhead() {
         int result = cm1.addFutureMeeting(testSet1, plus1Min);
-        assertEquals(6, result);
+        assertEquals(1, result);
     }
 
     @Test
