@@ -146,7 +146,26 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalArgumentException if the contact does not exist
      * @throws NullPointerException if the contact is null
      */
-    public List<PastMeeting> getPastMeetingListFor(Contact contact) {return null;}
+    public List<PastMeeting> getPastMeetingListFor(Contact contact) {
+        if (contact == null) {
+            throw new NullPointerException("Contact must not be null.");
+        }
+        if (!myContacts.contains(contact)) {
+            throw new IllegalArgumentException("Unknown contact cannot be used.");
+        }
+        List<Meeting> tempList = new ArrayList<>();
+        for (Meeting m : pastMeetings) {
+            if (m.getContacts().contains(contact)) {
+                tempList.add(m);
+            }
+        }
+        List<Meeting> tempList2 = sortMeetingList(tempList);
+        List<PastMeeting> resultList = new ArrayList<>();
+        for (Meeting m : tempList2) {
+            resultList.add(((PastMeeting)m));
+        }
+        return resultList;
+    }
 
 
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {

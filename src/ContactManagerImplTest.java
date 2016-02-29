@@ -978,9 +978,10 @@ public class ContactManagerImplTest {
         List<PastMeeting> testList = cm2.getPastMeetingListFor(con2);
         assertEquals(3, testList.size());
         assertEquals(minus1Day, testList.get(2).getDate());
-        assertEquals(plus1Month, testList.get(1).getDate());
+        assertEquals(minus1Month, testList.get(1).getDate());
         assertEquals(minus1Year, testList.get(0).getDate());
         assertEquals("", testList.get(2).getNotes());
+        assertEquals("even more notes", testList.get(1).getNotes());
     }
 
     @Test
@@ -1018,12 +1019,12 @@ public class ContactManagerImplTest {
         cm1.addNewPastMeeting(testSet1, minus1Sec, "sixth");
         List<PastMeeting> testList = cm1.getPastMeetingListFor(con1);
         assertEquals(6, testList.size());
-        assertEquals(plus1Sec, testList.get(5).getDate());
-        assertEquals(plus1Min, testList.get(4).getDate());
-        assertEquals(plus1Hour, testList.get(3).getDate());
-        assertEquals(plus1Day, testList.get(2).getDate());
-        assertEquals(plus1Month, testList.get(1).getDate());
-        assertEquals(plus1Year, testList.get(0).getDate());
+        assertEquals(minus1Sec, testList.get(5).getDate());
+        assertEquals(minus1Min, testList.get(4).getDate());
+        assertEquals(minus1Hour, testList.get(3).getDate());
+        assertEquals(minus1Day, testList.get(2).getDate());
+        assertEquals(minus1Month, testList.get(1).getDate());
+        assertEquals(minus1Year, testList.get(0).getDate());
         for (Meeting m : testList) {
             assertTrue(m.getContacts().equals(testSet1));
         }
