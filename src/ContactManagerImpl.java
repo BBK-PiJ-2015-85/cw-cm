@@ -78,7 +78,19 @@ public class ContactManagerImpl implements ContactManager {
      * @param id the ID for the meeting
      * @return the meeting with the requested ID, or null if it there is none.
      */
-    public Meeting getMeeting(int id) {return null;}
+    public Meeting getMeeting(int id) {
+        for (Meeting m : futureMeetings) {
+            if (id == m.getId()) {
+                return m;
+            }
+        }
+        for (Meeting m : pastMeetings) {
+            if (id == m.getId()) {
+                return m;
+            }
+        }
+        return null;
+    }
 
     /**
      * Returns the list of future meetings scheduled with this contact.
