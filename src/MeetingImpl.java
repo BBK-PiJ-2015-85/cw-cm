@@ -54,5 +54,4 @@ public abstract class MeetingImpl implements Meeting {
     public Set<Contact> getContacts() {
         return meetingAttendees;
     }
-
 }

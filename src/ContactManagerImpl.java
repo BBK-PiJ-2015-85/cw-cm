@@ -104,7 +104,21 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalArgumentException if the contact does not exist
      * @throws NullPointerException if the contact is null
      */
-    public List<Meeting> getFutureMeetingList(Contact contact) {return null;}
+    public List<Meeting> getFutureMeetingList(Contact contact) {
+        if (contact == null) {
+            throw new NullPointerException("Contact must not be null.");
+        }
+        if (!myContacts.contains(contact)) {
+            throw new IllegalArgumentException("Unknown contact cannot used.");
+        }
+        List<Meeting> resultList = new ArrayList<>();
+        for (FutureMeeting m : futureMeetings) {
+            if (m.getContacts().contains(contact)) {
+                resultList.add(m);
+            }
+        }
+        return sortMeetingList(resultList);
+    }
 
     /**
      * Returns the list of meetings that are scheduled for, or that took
@@ -222,4 +236,20 @@ public class ContactManagerImpl implements ContactManager {
      * closed and when/if the user requests it.
      */
     public void flush() {}
+
+    /**
+     * Sorts a list of meetings into chronological order.
+     *
+     * @param listToSort a list of meetings to be sorted.
+     * @return the list of meetings sorted chronologically.
+     */
+    public List<Meeting> sortMeetingList(List<Meeting> listToSort) {
+        Collections.sort(listToSort, new Comparator<Meeting>() {
+            @Override
+            public int compare(Meeting o1, Meeting o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+        return listToSort;
+    }
 }

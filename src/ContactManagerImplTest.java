@@ -855,7 +855,7 @@ public class ContactManagerImplTest {
     @Test
     public void testsThreeFutureMeetingsForContact() {
         cm2.addFutureMeeting(testSet2, plus1Year);
-        cm2.addFutureMeeting(testSet3, plus1Month);
+        cm2.addFutureMeeting(testSet2, plus1Month);
         cm2.addFutureMeeting(testSet2, plus1Day);
         List<Meeting> testList = cm2.getFutureMeetingList(con2);
         assertEquals(3, testList.size());
