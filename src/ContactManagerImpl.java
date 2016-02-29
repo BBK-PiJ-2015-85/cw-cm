@@ -8,8 +8,8 @@ public class ContactManagerImpl implements ContactManager {
     private int contactIdCount;
     private int meetingIdCount;
     private Set<Contact> myContacts;
-    private Set<Meeting> futureMeetings;
-    private Set<Meeting> pastMeetings;
+    private Set<FutureMeeting> futureMeetings;
+    private Set<PastMeeting> pastMeetings;
 
     public ContactManagerImpl() {
         contactIdCount = 0;
@@ -59,7 +59,17 @@ public class ContactManagerImpl implements ContactManager {
      * in the future
      */
     public PastMeeting getPastMeeting(int id) {
-
+        for (PastMeeting m : pastMeetings) {
+            if (id == m.getId()) {
+                return m;
+            }
+        }
+        for (FutureMeeting m : futureMeetings) {
+            if (id == m.getId()) {
+                throw new IllegalStateException("ID provided must be for a past meeting.");
+            }
+        }
+        return null;
     }
 
     /**
