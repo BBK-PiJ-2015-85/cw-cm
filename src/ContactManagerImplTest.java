@@ -74,13 +74,13 @@ public class ContactManagerImplTest {
         plus1Sec.roll(Calendar.SECOND, true);
         plus1Min.roll(Calendar.MINUTE, true);
         plus1Hour.roll(Calendar.HOUR, true);
-        plus1Day.roll(Calendar.DAY_OF_WEEK, true);
+        plus1Day.add(Calendar.DATE, 1);
         plus1Month.roll(Calendar.MONTH, true);
         plus1Year.roll(Calendar.YEAR, true);
         minus1Sec.roll(Calendar.SECOND, false);
         minus1Min.roll(Calendar.MINUTE, false);
         minus1Hour.roll(Calendar.HOUR, false);
-        minus1Day.roll(Calendar.DAY_OF_WEEK, false);
+        minus1Day.add(Calendar.DATE, -1);
         minus1Month.roll(Calendar.MONTH, false);
         minus1Year.roll(Calendar.YEAR, false);
     }
@@ -441,6 +441,99 @@ public class ContactManagerImplTest {
         int result = cm3.addFutureMeeting(testSet3, plus1Day);
         assertEquals(1, result);
     }
+
+
+    /**
+     * test addNewPastMeeting()
+     */
+
+    @Test(expected = NullPointerException.class)
+    public void testsAddingNullContacts() {
+        cm1.addNewPastMeeting(null, minus1Year, "test meeting");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testsAddingNullDate() {
+        cm1.addNewPastMeeting(testSet1, null, "test meeting");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testsAddingNullNotes() {
+        cm1.addNewPastMeeting(testSet1, minus1Year, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsEmptyContactSet() {
+        Set<Contact> testSet = new HashSet<>();
+        cm1.addNewPastMeeting(testSet, minus1Month, "Test Notes");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsNotKnownContact() {
+        cm1.addNewPastMeeting(testSet2, minus1Day, "notes");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsAddingMeetingWhenNoContactsExist() {
+        cm.addNewPastMeeting(testSet1, minus1Hour, "notes");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsFutureDateOneSec() {
+        cm1.addNewPastMeeting(testSet1, plus1Sec, "notes");
+    }
+
+    @Test
+    public void testsAddOnePastMeeting() {
+        assertNull(cm1.getPastMeeting(1));
+        cm1.addNewPastMeeting(testSet1, minus1Day, "past meeting");
+        assertNotNull(cm1.getPastMeeting(1));
+    }
+
+    @Test
+    public void testsAddTwoPastMeetings() {
+        assertNull(cm2.getPastMeeting(1));
+        assertNull(cm2.getPastMeeting(2));
+        cm2.addNewPastMeeting(testSet1, minus1Year, "test");
+        assertNotNull(cm2.getPastMeeting(1));
+        assertNull(cm2.getPastMeeting(2));
+        cm2.addNewPastMeeting(testSet2, minus1Month, "second meeting");
+        assertNotNull(cm2.getPastMeeting(2));
+    }
+
+    @Test
+    public void testsAddFutureMeetingThenPastMeeting() {
+        cm3.addFutureMeeting(testSet1, plus1Day);
+        assertNull(cm3.getPastMeeting(2));
+        cm3.addNewPastMeeting(testSet3, minus1Hour, "meeting");
+        assertNotNull(cm3.getPastMeeting(2));
+    }
+
+    @Test
+    public void testsAddMultiplePastAndFutureMeetings() {
+        cm3.addFutureMeeting(testSet1, plus1Day);
+        assertNull(cm3.getPastMeeting(2));
+        assertNull(cm3.getPastMeeting(3));
+        cm3.addNewPastMeeting(testSet2, minus1Min, "test");
+        cm3.addNewPastMeeting(testSet3, minus1Year,"tet2");
+        assertNotNull(cm3.getPastMeeting(2));
+        assertNotNull(cm3.getPastMeeting(3));
+        cm3.addFutureMeeting(testSet1, plus1Year);
+        assertNull(cm3.getPastMeeting(5));
+        cm3.addNewPastMeeting(testSet1, minus1Sec, "test3");
+        assertNotNull(cm3.getPastMeeting(5));
+    }
+
+    @Test
+    public void addPastMeetingWithEmptyNotes() {
+        cm.addNewContact("Con1", "test contact 1");
+        assertNull(cm.getPastMeeting(1));
+        cm.addNewPastMeeting(testSet1, minus1Min, "meeting");
+        assertNotNull(cm.getPastMeeting(1));
+    }
+
+
+
 
 
 
