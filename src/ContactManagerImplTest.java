@@ -608,12 +608,113 @@ public class ContactManagerImplTest {
     }
 
     @Test
-    public void getPastMeetingZeroId() {
+    public void testsGetPastMeetingZeroId() {
         cm3.addNewPastMeeting(testSet1, minus1Sec, "first");
         cm3.addNewPastMeeting(testSet2, minus1Day, "second");
         cm3.addNewPastMeeting(testSet3, minus1Hour, "third");
         assertNull(cm3.getPastMeeting(0));
     }
+
+    @Test
+    public void testsGetPastMeetingNegativeId() {
+        cm3.addNewPastMeeting(testSet1, minus1Sec, "first");
+        cm3.addNewPastMeeting(testSet2, minus1Day, "second");
+        cm3.addNewPastMeeting(testSet3, minus1Hour, "third");
+        assertNull(cm3.getPastMeeting(-3));
+    }
+
+
+    /**
+     * Test getFutureMeeting()
+     */
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsGetAPastMeetingId() {
+        cm1.addNewPastMeeting(testSet1, minus1Sec, "past meet");
+        cm1.getFutureMeeting(1);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testsAddingPastAndFutureAndUsingWrongId() {
+        cm3.addFutureMeeting(testSet1, plus1Day);
+        cm3.addNewPastMeeting(testSet3, minus1Month, "test");
+        cm3.getFutureMeeting(2);
+    }
+
+    @Test
+    public void testsGetFutureMeetingNoFutureMeetings() {
+        assertNull(cm1.getFutureMeeting(1));
+    }
+
+    @Test
+    public void testsGetFutureMeetingWrongId() {
+        cm2.addFutureMeeting(testSet1, plus1Day);
+        cm2.addFutureMeeting(testSet2, plus1Year);
+        assertNull(cm2.getPastMeeting(3));
+    }
+
+    @Test
+    public void testsGetNonExistentMeetingAfterAddingPastMeeting() {
+        assertNull(cm1.getFutureMeeting(1));
+        cm1.addNewPastMeeting(testSet1, plus1Day, "my notes");
+        assertNull(cm1.getFutureMeeting(2));
+    }
+
+    @Test
+    public void testsGetDetailsOfOneFutureMeetingAdded() {
+        cm2.addFutureMeeting(testSet2, plus1Sec);
+        assertEquals(testSet2, cm2.getFutureMeeting(1).getContacts());
+        assertEquals(minus1Year, cm2.getFutureMeeting(1).getDate());
+    }
+
+    @Test
+    public void testsGetDetailsOfSecondAddedOfMultipleFutureMeetings() {
+        cm3.addFutureMeeting(testSet1, plus1Year);
+        cm3.addFutureMeeting(testSet2, plus1Month);
+        cm3.addFutureMeeting(testSet3, plus1Day);
+        assertEquals(2, cm3.getFutureMeeting(2).getId());
+        assertEquals(testSet2, cm3.getFutureMeeting(2).getContacts());
+        assertEquals(minus1Day, cm3.getFutureMeeting(2).getDate());
+    }
+
+    @Test
+    public void testsGetDetailsOfThirdAddedOfMultipleFutureMeetings() {
+        cm3.addFutureMeeting(testSet1, plus1Hour);
+        cm3.addFutureMeeting(testSet2, plus1Min);
+        cm3.addFutureMeeting(testSet3, plus1Day);
+        assertEquals(3, cm3.getFutureMeeting(3).getId());
+        assertEquals(testSet3, cm3.getFutureMeeting(3).getContacts());
+        assertEquals(minus1Hour, cm3.getFutureMeeting(3).getDate());
+    }
+
+    @Test
+    public void testsFutureMeetingReturnedIsSameAsAdded() {
+        cm2.addFutureMeeting(testSet2, plus1Hour);
+        FutureMeeting testMeet = cm2.getFutureMeeting(1);
+        assertEquals(testSet2, testMeet.getContacts());
+        assertEquals(plus1Hour, testMeet.getDate());
+        assertEquals(1,testMeet.getId());
+    }
+
+    @Test
+    public void testsGetFutureMeetingZeroId() {
+        cm3.addFutureMeeting(testSet1, plus1Month);
+        cm3.addFutureMeeting(testSet2, plus1Min);
+        cm3.addFutureMeeting(testSet3, plus1Sec);
+        assertNull(cm3.getFutureMeeting(0));
+    }
+
+    @Test
+    public void testsGetFutureMeetingNegativeId() {
+        cm1.addFutureMeeting(testSet1, plus1Year);
+        assertNull(cm1.getFutureMeeting(-2));
+    }
+
+    @Test
+    public void testsGetFutureMeetingZeroIdWhenNoFutureMeetings() {
+        assertNull(cm1.getFutureMeeting(0));
+    }
+    
 
 
 
