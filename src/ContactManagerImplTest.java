@@ -656,7 +656,7 @@ public class ContactManagerImplTest {
     @Test
     public void testsGetNonExistentMeetingAfterAddingPastMeeting() {
         assertNull(cm1.getFutureMeeting(1));
-        cm1.addNewPastMeeting(testSet1, plus1Day, "my notes");
+        cm1.addNewPastMeeting(testSet1, minus1Day, "my notes");
         assertNull(cm1.getFutureMeeting(2));
     }
 
@@ -664,7 +664,7 @@ public class ContactManagerImplTest {
     public void testsGetDetailsOfOneFutureMeetingAdded() {
         cm2.addFutureMeeting(testSet2, plus1Sec);
         assertEquals(testSet2, cm2.getFutureMeeting(1).getContacts());
-        assertEquals(minus1Year, cm2.getFutureMeeting(1).getDate());
+        assertEquals(plus1Sec, cm2.getFutureMeeting(1).getDate());
     }
 
     @Test
@@ -674,7 +674,7 @@ public class ContactManagerImplTest {
         cm3.addFutureMeeting(testSet3, plus1Day);
         assertEquals(2, cm3.getFutureMeeting(2).getId());
         assertEquals(testSet2, cm3.getFutureMeeting(2).getContacts());
-        assertEquals(minus1Day, cm3.getFutureMeeting(2).getDate());
+        assertEquals(plus1Month, cm3.getFutureMeeting(2).getDate());
     }
 
     @Test
@@ -684,7 +684,7 @@ public class ContactManagerImplTest {
         cm3.addFutureMeeting(testSet3, plus1Day);
         assertEquals(3, cm3.getFutureMeeting(3).getId());
         assertEquals(testSet3, cm3.getFutureMeeting(3).getContacts());
-        assertEquals(minus1Hour, cm3.getFutureMeeting(3).getDate());
+        assertEquals(plus1Day, cm3.getFutureMeeting(3).getDate());
     }
 
     @Test
@@ -714,7 +714,88 @@ public class ContactManagerImplTest {
     public void testsGetFutureMeetingZeroIdWhenNoFutureMeetings() {
         assertNull(cm1.getFutureMeeting(0));
     }
-    
+
+    /**
+     * Test getMeeting()
+     */
+
+    @Test
+    public void testsGetMeetingNoMeetings() {
+        assertNull(cm1.getMeeting(1));
+    }
+
+    @Test
+    public void testsGetMeetingIdZero() {
+        cm2.addFutureMeeting(testSet2, plus1Day);
+        assertNull(cm2.getMeeting(0));
+    }
+
+    @Test
+    public void testsGetMeetingIdNegative() {
+        cm1.addNewPastMeeting(testSet1, minus1Month, "");
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        assertNull(cm1.getMeeting(-1));
+    }
+
+    @Test
+    public void testsIdNotExist() {
+        cm3.addFutureMeeting(testSet1, plus1Year);
+        cm3.addNewPastMeeting(testSet3, minus1Month, "notessss");
+        assertNull(cm3.getMeeting(3));
+    }
+
+    @Test
+    public void testsGetMeetingOneFutureMeeting() {
+        cm1.addFutureMeeting(testSet1, plus1Year);
+        Meeting testMeet = cm1.getMeeting(1);
+        assertEquals(1, testMeet.getId());
+        assertEquals(testSet1, testMeet.getContacts());
+        assertEquals(plus1Year, testMeet.getDate());
+    }
+
+    @Test
+    public void testsGetMeetingOnePastMeeting() {
+        cm2.addNewPastMeeting(testSet2, minus1Month, "testnotes");
+        Meeting testMeet = cm2.getMeeting(1);
+        assertEquals(1, testMeet.getId());
+        assertEquals(testSet2, testMeet.getContacts());
+        assertEquals(minus1Month, testMeet.getDate());
+        assertEquals("testnotes", ((PastMeeting)testMeet).getNotes());
+    }
+
+    @Test
+    public void testsAddOneOfEachTypeOfMeetingAndGetDetails() {
+        cm2.addFutureMeeting(testSet2, plus1Year);
+        cm2.addNewPastMeeting(testSet1, minus1Month, "my notes");
+        Meeting testMeet = cm2.getMeeting(1);
+        Meeting testMeet2 = cm2.getMeeting(2);
+        assertEquals(testSet2, testMeet.getContacts());
+        assertEquals(plus1Year, testMeet.getDate());
+        assertEquals("my notes", ((PastMeeting)testMeet2).getNotes());
+        assertEquals(2, testMeet2.getId());
+        assertEquals(minus1Month, testMeet2.getDate());
+    }
+
+    @Test
+    public void testsAddMultipleOfEachTypeOfMeetingAndGetThem() {
+        cm3.addNewPastMeeting(testSet1, minus1Hour, "1");
+        cm3.addNewPastMeeting(testSet3, minus1Month, "2");
+        cm3.addFutureMeeting(testSet2, plus1Year);
+        cm3.addNewPastMeeting(testSet2, minus1Sec, "3");
+        cm3.addFutureMeeting(testSet1, plus1Day);
+        cm3.addFutureMeeting(testSet2, plus1Hour);
+        assertNull(cm3.getMeeting(7));
+        assertNotNull(cm3.getMeeting(6));
+        assertEquals(minus1Hour, cm3.getMeeting(1).getDate());
+        assertEquals(minus1Month, cm3.getMeeting(2).getDate());
+        assertEquals(plus1Year, cm3.getMeeting(3).getDate());
+        assertEquals(minus1Sec, cm3.getMeeting(4).getDate());
+        assertEquals(plus1Day, cm3.getMeeting(5).getDate());
+        assertEquals(plus1Hour, cm3.getMeeting(6).getDate());
+    }
+
+
+
 
 
 
