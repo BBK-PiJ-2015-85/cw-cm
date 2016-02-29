@@ -532,6 +532,90 @@ public class ContactManagerImplTest {
         assertNotNull(cm.getPastMeeting(1));
     }
 
+    /**
+     * test getPastMeeting()
+     */
+
+    @Test(expected = IllegalStateException.class)
+    public void testsIdForFutureMeetingNotPast() {
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        cm1.getPastMeeting(1);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testsAddTwoMeetingsTryAndFindPastWithFutureId() {
+        cm1.addNewPastMeeting(testSet1, minus1Min, "test");
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        cm1.getPastMeeting(2);
+    }
+
+    @Test
+    public void testsGetPastMeetingNoPastMeetings() {
+        assertNull(cm1.getPastMeeting(1));
+    }
+
+    @Test
+    public void testsGetPastMeetingWrongId() {
+        cm2.addNewPastMeeting(testSet1, minus1Sec, "notes1");
+        cm2.addNewPastMeeting(testSet2, minus1Month, "notes2");
+        assertNull(cm2.getPastMeeting(3));
+    }
+
+    @Test
+    public void testsGetNonExistentMeetingAfterAddingFutureMeeting() {
+        assertNull(cm1.getPastMeeting(1));
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        assertNull(cm1.getPastMeeting(2));
+    }
+
+    @Test
+    public void testsGetDetailsOfOneMeetingAdded() {
+        cm2.addNewPastMeeting(testSet2, minus1Year, "my test notes");
+        assertEquals("my test notes", cm2.getPastMeeting(1).getNotes());
+        assertEquals(testSet2, cm2.getPastMeeting(1).getContacts());
+        assertEquals(minus1Year, cm2.getPastMeeting(1).getDate());
+    }
+
+    @Test
+    public void testsGetDetailsOfSecondAddedOfMultiplePastMeetings() {
+        cm3.addNewPastMeeting(testSet1, minus1Sec, "first");
+        cm3.addNewPastMeeting(testSet2, minus1Day, "second");
+        cm3.addNewPastMeeting(testSet3, minus1Hour, "third");
+        assertEquals(2, cm3.getPastMeeting(2).getId());
+        assertEquals(testSet2, cm3.getPastMeeting(2).getContacts());
+        assertEquals("second", cm3.getPastMeeting(2).getNotes());
+        assertEquals(minus1Day, cm3.getPastMeeting(2).getDate());
+    }
+
+    @Test
+    public void testsGetDetailsOfThirdAddedOfMultiplePastMeetings() {
+        cm3.addNewPastMeeting(testSet1, minus1Sec, "first");
+        cm3.addNewPastMeeting(testSet2, minus1Day, "second");
+        cm3.addNewPastMeeting(testSet3, minus1Hour, "third");
+        assertEquals(3, cm3.getPastMeeting(3).getId());
+        assertEquals(testSet3, cm3.getPastMeeting(3).getContacts());
+        assertEquals("third", cm3.getPastMeeting(3).getNotes());
+        assertEquals(minus1Hour, cm3.getPastMeeting(3).getDate());
+    }
+
+    @Test
+    public void testsMeetingReturnedIsSameAsAdded() {
+        cm2.addNewPastMeeting(testSet1, minus1Month, "testMeet");
+        PastMeeting testMeet = cm2.getPastMeeting(1);
+        assertEquals(testSet1, testMeet.getContacts());
+        assertEquals(minus1Month, testMeet.getDate());
+        assertEquals("testMeet", testMeet.getNotes());
+    }
+
+    @Test
+    public void getPastMeetingZeroId() {
+        cm3.addNewPastMeeting(testSet1, minus1Sec, "first");
+        cm3.addNewPastMeeting(testSet2, minus1Day, "second");
+        cm3.addNewPastMeeting(testSet3, minus1Hour, "third");
+        assertNull(cm3.getPastMeeting(0));
+    }
+
+
 
 
 
