@@ -9,13 +9,14 @@ public class ContactManagerImpl implements ContactManager {
     private int meetingIdCount;
     private Set<Contact> myContacts;
     private Set<Meeting> futureMeetings;
+    private Set<Meeting> pastMeetings;
 
     public ContactManagerImpl() {
         contactIdCount = 0;
         meetingIdCount = 0;
         myContacts = new HashSet<>();
         futureMeetings = new HashSet<>();
-
+        pastMeetings = new HashSet<>();
     }
 
     /**
@@ -57,7 +58,9 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalStateException if there is a meeting with that ID happening
      * in the future
      */
-    public PastMeeting getPastMeeting(int id) {return null;}
+    public PastMeeting getPastMeeting(int id) {
+
+    }
 
     /**
      * Returns the FUTURE meeting with the requested ID, or null if there is none.
@@ -129,7 +132,23 @@ public class ContactManagerImpl implements ContactManager {
      *empty, or any of the contacts does not exist
      * @throws NullPointerException if any of the arguments is null
      */
-    public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {}
+    public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+        if (contacts == null || date == null || text == null) {
+            throw new NullPointerException("Null parameters cannot be passed as arguments.");
+        }
+        if (contacts.isEmpty()) {
+            throw new IllegalArgumentException("Contact set must not be empty.");
+        }
+        Calendar currentDate = new GregorianCalendar();
+        if (!date.before(currentDate)) {
+            throw new IllegalArgumentException("Date must be in the past.");
+        }
+        if (!myContacts.containsAll(contacts)) {
+            throw new IllegalArgumentException("Unknown contacts cannot be added to meetings.");
+        }
+        meetingIdCount++;
+        pastMeetings.add(new PastMeetingImpl(meetingIdCount, date, contacts, text));
+    }
 
     /**
      * Add notes to a meeting.
