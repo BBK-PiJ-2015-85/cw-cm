@@ -117,7 +117,8 @@ public class ContactManagerImpl implements ContactManager {
                 resultList.add(m);
             }
         }
-        return sortMeetingList(resultList);
+        resultList.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+        return resultList;
     }
 
     /**
@@ -153,17 +154,13 @@ public class ContactManagerImpl implements ContactManager {
         if (!myContacts.contains(contact)) {
             throw new IllegalArgumentException("Unknown contact cannot be used.");
         }
-        List<Meeting> tempList = new ArrayList<>();
-        for (Meeting m : pastMeetings) {
+        List<PastMeeting> resultList = new ArrayList<>();
+        for (PastMeeting m : pastMeetings) {
             if (m.getContacts().contains(contact)) {
-                tempList.add(m);
+                resultList.add(m);
             }
         }
-        List<Meeting> tempList2 = sortMeetingList(tempList);
-        List<PastMeeting> resultList = new ArrayList<>();
-        for (Meeting m : tempList2) {
-            resultList.add(((PastMeeting)m));
-        }
+        resultList.sort((x, y) -> x.getDate().compareTo(y.getDate()));
         return resultList;
     }
 
@@ -263,13 +260,8 @@ public class ContactManagerImpl implements ContactManager {
      * @param listToSort a list of meetings to be sorted.
      * @return the list of meetings sorted chronologically.
      */
-    public List<Meeting> sortMeetingList(List<Meeting> listToSort) {
-        Collections.sort(listToSort, new Comparator<Meeting>() {
-            @Override
-            public int compare(Meeting o1, Meeting o2) {
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
+    public List<? extends Meeting> sortMeetingList(List<? extends Meeting> listToSort) {
+        listToSort.sort((x, y) -> x.getDate().compareTo(y.getDate()));
         return listToSort;
     }
 }

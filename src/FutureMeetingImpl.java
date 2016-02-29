@@ -19,5 +19,4 @@ public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting {
     public boolean equals(Object other) {
         return other instanceof FutureMeetingImpl && this.hashCode() == other.hashCode();
     }
-
 }

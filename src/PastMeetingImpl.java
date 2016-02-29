@@ -17,7 +17,7 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 
     /**
      * Returns the notes from the meeting.
-     * <p>
+     *
      * If there are no notes, the empty string is returned.
      *
      * @return the notes from the meeting.
