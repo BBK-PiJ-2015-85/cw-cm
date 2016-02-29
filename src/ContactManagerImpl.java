@@ -237,6 +237,7 @@ public class ContactManagerImpl implements ContactManager {
      */
     public void flush() {}
 
+
     /**
      * Sorts a list of meetings into chronological order.
      *
