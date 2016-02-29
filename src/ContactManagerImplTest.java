@@ -1,10 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -792,6 +789,123 @@ public class ContactManagerImplTest {
         assertEquals(minus1Sec, cm3.getMeeting(4).getDate());
         assertEquals(plus1Day, cm3.getMeeting(5).getDate());
         assertEquals(plus1Hour, cm3.getMeeting(6).getDate());
+    }
+
+
+    /**
+     * Test getFutureMeetingList(Contact)
+     */
+
+    @Test(expected = NullPointerException.class)
+    public void testNullContact() {
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        cm1.getFutureMeetingList(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsContactDoesNotExist() {
+        cm2.addFutureMeeting(testSet2, plus1Year);
+        cm2.getFutureMeetingList(con3);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsNoContacts() {
+        cm.getFutureMeetingList(con1);
+    }
+
+    @Test
+    public void testsNoFutureMeetings() {
+        List<Meeting> testList = cm1.getFutureMeetingList(con1);
+        assertTrue(testList.isEmpty());
+    }
+
+    @Test
+    public void testsOnlyPastMeetingsAdded() {
+        cm3.addNewPastMeeting(testSet2, minus1Month, "test1");
+        cm3.addNewPastMeeting(testSet3, minus1Hour, "test2");
+        assertTrue(cm3.getFutureMeetingList(con2).isEmpty());
+    }
+
+    @Test
+    public void testsNoFutureMeetingsForSpecifiedContact() {
+        cm3.addFutureMeeting(testSet2, plus1Day);
+        cm3.addFutureMeeting(testSet1, plus1Year);
+        assertTrue(cm3.getFutureMeetingList(con3).isEmpty());
+    }
+
+    @Test
+    public void testsOneFutureMeetingForGivenContact() {
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        List<Meeting> testList = cm1.getFutureMeetingList(con1);
+        assertEquals(1, testList.size());
+        assertEquals(plus1Day, testList.get(0).getDate());
+        assertEquals(testSet1, testList.get(0).getContacts());
+    }
+
+    @Test
+    public void testsTwoFutureMeetingsForContact() {
+        cm3.addFutureMeeting(testSet1, plus1Year);
+        cm3.addFutureMeeting(testSet2, plus1Day);
+        List<Meeting> testList = cm3.getFutureMeetingList(con1);
+        assertEquals(2, testList.size());
+        assertEquals(plus1Day, testList.get(0).getDate());
+        assertEquals(plus1Year, testList.get(1).getDate());
+    }
+
+    @Test
+    public void testsThreeFutureMeetingsForContact() {
+        cm2.addFutureMeeting(testSet2, plus1Year);
+        cm2.addFutureMeeting(testSet3, plus1Month);
+        cm2.addFutureMeeting(testSet2, plus1Day);
+        List<Meeting> testList = cm2.getFutureMeetingList(con2);
+        assertEquals(3, testList.size());
+        assertEquals(plus1Year, testList.get(2).getDate());
+        assertEquals(plus1Month, testList.get(1).getDate());
+        assertEquals(plus1Day, testList.get(0).getDate());
+    }
+
+    @Test
+    public void testsOnlyAddingFutureMeetingsToList() {
+        cm2.addFutureMeeting(testSet2, plus1Year);
+        cm2.addFutureMeeting(testSet2, plus1Month);
+        cm2.addFutureMeeting(testSet2, plus1Day);
+        cm2.addNewPastMeeting(testSet2, minus1Hour, "test");
+        cm2.addNewPastMeeting(testSet2, minus1Day, "test2");
+        List<Meeting> testList = cm2.getFutureMeetingList(con2);
+        assertEquals(3, testList.size());
+        assertEquals(plus1Day, testList.get(0).getDate());
+        assertEquals(plus1Month, testList.get(1).getDate());
+        assertEquals(plus1Year, testList.get(2).getDate());
+    }
+
+    @Test
+    public void testsTwoContactsWithSameMeetingsReturnSameList() {
+        cm3.addFutureMeeting(testSet3, plus1Day);
+        cm3.addFutureMeeting(testSet3, plus1Month);
+        cm3.addFutureMeeting(testSet3, plus1Year);
+        assertEquals(cm3.getFutureMeetingList(con1), cm3.getFutureMeetingList(con2));
+        assertEquals(cm3.getFutureMeetingList(con3), cm3.getFutureMeetingList(con1));
+    }
+
+    @Test
+    public void testsListSortingWithSixMeetings() {
+        cm1.addFutureMeeting(testSet1, plus1Year);
+        cm1.addFutureMeeting(testSet1, plus1Month);
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        cm1.addFutureMeeting(testSet1, plus1Hour);
+        cm1.addFutureMeeting(testSet1, plus1Min);
+        cm1.addFutureMeeting(testSet1, plus1Sec);
+        List<Meeting> testList = cm1.getFutureMeetingList(con1);
+        assertEquals(6, testList.size());
+        assertEquals(plus1Sec, testList.get(0).getDate());
+        assertEquals(plus1Min, testList.get(1).getDate());
+        assertEquals(plus1Hour, testList.get(2).getDate());
+        assertEquals(plus1Day, testList.get(3).getDate());
+        assertEquals(plus1Month, testList.get(4).getDate());
+        assertEquals(plus1Year, testList.get(5).getDate());
+        for (Meeting m : testList) {
+            assertTrue(m.getContacts().equals(testSet1));
+        }
     }
 
 
