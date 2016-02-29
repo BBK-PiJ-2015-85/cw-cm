@@ -71,18 +71,18 @@ public class ContactManagerImplTest {
         minus1Day = new GregorianCalendar();
         minus1Month = new GregorianCalendar();
         minus1Year = new GregorianCalendar();
-        plus1Sec.roll(Calendar.SECOND, true);
-        plus1Min.roll(Calendar.MINUTE, true);
-        plus1Hour.roll(Calendar.HOUR, true);
+        plus1Sec.add(Calendar.SECOND, 1);
+        plus1Min.add(Calendar.MINUTE, 1);
+        plus1Hour.add(Calendar.HOUR, 1);
         plus1Day.add(Calendar.DATE, 1);
-        plus1Month.roll(Calendar.MONTH, true);
-        plus1Year.roll(Calendar.YEAR, true);
-        minus1Sec.roll(Calendar.SECOND, false);
-        minus1Min.roll(Calendar.MINUTE, false);
-        minus1Hour.roll(Calendar.HOUR, false);
+        plus1Month.add(Calendar.MONTH, 1);
+        plus1Year.add(Calendar.YEAR, 1);
+        minus1Sec.add(Calendar.SECOND, -1);
+        minus1Min.add(Calendar.MINUTE, -1);
+        minus1Hour.add(Calendar.HOUR, -1);
         minus1Day.add(Calendar.DATE, -1);
-        minus1Month.roll(Calendar.MONTH, false);
-        minus1Year.roll(Calendar.YEAR, false);
+        minus1Month.add(Calendar.MONTH, -1);
+        minus1Year.add(Calendar.YEAR, -1);
     }
 
     /**
