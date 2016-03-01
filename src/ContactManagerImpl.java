@@ -218,7 +218,38 @@ public class ContactManagerImpl implements ContactManager {
      * @throws IllegalStateException if the meeting is set for a date in the future
      * @throws NullPointerException if the notes are null
      */
-    public PastMeeting addMeetingNotes(int id, String text) {return null;}
+    public PastMeeting addMeetingNotes(int id, String text) {
+        PastMeeting pm;
+        if (id <= 0 || id > meetingIdCount) {
+            throw new IllegalArgumentException("Meeting ID does not exist.");
+        }
+        if (text == null) {
+            throw new NullPointerException("Notes must not be null.");
+        }
+        Calendar currentDate = new GregorianCalendar();
+        if (!getMeeting(id).getDate().before(currentDate)) {
+            throw new IllegalStateException("Cannot add notes to meetings that are yet to occur.");
+        }
+        for (Iterator<FutureMeeting> iterator = futureMeetings.iterator(); iterator.hasNext();) {
+            FutureMeeting current = iterator.next();
+            if (current.getId() == id) {
+                pm = new PastMeetingImpl(id, current.getDate(), current.getContacts(), text);
+                pastMeetings.add(pm);
+                iterator.remove();
+                return pm;
+            }
+        }
+        pm = new PastMeetingImpl(id, getPastMeeting(id).getDate(), getPastMeeting(id).getContacts(), text);
+        for (Iterator<PastMeeting> iterator = pastMeetings.iterator(); iterator.hasNext();) {
+            PastMeeting current = iterator.next();
+            if (current.getId() == id) {
+                iterator.remove();
+                break;
+            }
+        }
+        pastMeetings.add(pm);
+        return pm;
+    }
 
 
     public int addNewContact(String name, String notes) {

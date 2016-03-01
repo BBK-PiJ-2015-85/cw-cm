@@ -12,7 +12,7 @@ public class ContactManagerImplTest {
     ContactManager cm, cm1, cm2, cm3;
     Set<Contact> testSet1, testSet2, testSet3;
     Contact con1, con2, con3;
-    Calendar current, plus1Sec, plus1Min, plus1Hour, plus1Day, plus1Month, plus1Year,
+    Calendar current, plus10Ms, plus1Sec, plus1Min, plus1Hour, plus1Day, plus1Month, plus1Year,
              minus1Min, minus1Sec, minus1Hour, minus1Day, minus1Month, minus1Year;
 
     @Before
@@ -58,6 +58,7 @@ public class ContactManagerImplTest {
         current = new GregorianCalendar();
         plus1Sec = new GregorianCalendar();
         minus1Sec = new GregorianCalendar();
+        plus10Ms = new GregorianCalendar();
         plus1Min = new GregorianCalendar();
         plus1Hour = new GregorianCalendar();
         plus1Day = new GregorianCalendar();
@@ -68,6 +69,7 @@ public class ContactManagerImplTest {
         minus1Day = new GregorianCalendar();
         minus1Month = new GregorianCalendar();
         minus1Year = new GregorianCalendar();
+        plus10Ms.add(Calendar.MILLISECOND, 10);
         plus1Sec.add(Calendar.SECOND, 1);
         plus1Min.add(Calendar.MINUTE, 1);
         plus1Hour.add(Calendar.HOUR, 1);
@@ -1280,11 +1282,11 @@ public class ContactManagerImplTest {
 
     @Test
     public void testsAddExtraNotesToPastMeeting() {
-        //assumption is that this will add to existing notes
+        //assumption is that this will overwrite existing notes
         cm1.addNewPastMeeting(testSet1, minus1Month, "notes");
         PastMeeting pm = cm1.addMeetingNotes(1, "more notes");
-        assertEquals("notes; more notes", pm.getNotes());
-        assertEquals("notes; more notes", cm1.getPastMeetingListFor(con1).get(0).getNotes());
+        assertEquals("more notes", pm.getNotes());
+        assertEquals("more notes", cm1.getPastMeetingListFor(con1).get(0).getNotes());
     }
 
     @Test
@@ -1302,19 +1304,20 @@ public class ContactManagerImplTest {
         PastMeeting pm = cm3.addMeetingNotes(3, "success");
         cm3.addMeetingNotes(1, "");
         cm3.addMeetingNotes(2, "cancelled");
-        assertEquals("3; success", pm.getNotes());
+        assertEquals("success", pm.getNotes());
         assertEquals("cancelled", cm3.getPastMeetingListFor(con2).get(1).getNotes());
-        assertEquals("notes", cm3.getPastMeetingListFor(con1).get(2).getNotes());
+        assertEquals("", cm3.getPastMeetingListFor(con1).get(2).getNotes());
     }
 
+
     @Test
-    public void testsMutipleFutureMeetingsNowPast() {
-        cm3.addFutureMeeting(testSet1, plus1Sec);
-        cm3.addFutureMeeting(testSet2, plus1Sec);
-        cm3.addFutureMeeting(testSet3, plus1Sec);
+    public void testsMultipleFutureMeetingsNowPast() {
+        cm3.addFutureMeeting(testSet1, plus10Ms);
+        cm3.addFutureMeeting(testSet2, plus10Ms);
+        cm3.addFutureMeeting(testSet3, plus10Ms);
         assertEquals(3, cm3.getFutureMeetingList(con1).size());
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException ex) {
             System.out.println(); //catch not needed
         }
@@ -1324,7 +1327,13 @@ public class ContactManagerImplTest {
         assertTrue(cm3.getFutureMeetingList(con1).isEmpty());
         assertEquals(3, cm3.getPastMeetingListFor(con1).size());
         assertEquals("first", pm1.getNotes());
+        assertTrue(cm3.getFutureMeetingList(con1).isEmpty());
+        assertNotNull(cm3.getPastMeeting(1));
     }
+
+
+
+
 
 
 
