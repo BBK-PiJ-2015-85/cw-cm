@@ -133,7 +133,26 @@ public class ContactManagerImpl implements ContactManager {
      * @return the list of meetings
      * @throws NullPointerException if the date are null
      */
-    public List<Meeting> getMeetingListOn(Calendar date) {return null;}
+    public List<Meeting> getMeetingListOn(Calendar date) {
+        if (date == null) {
+            throw new NullPointerException("Date must not be null.");
+        }
+        List<Meeting> resultList = new ArrayList<>();
+        for (Meeting m : futureMeetings) {
+            if (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                    && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) {
+                resultList.add(m);
+            }
+        }
+        for (Meeting m : pastMeetings) {
+            if (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                    && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) {
+                resultList.add(m);
+            }
+        }
+        resultList.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+        return resultList;
+    }
 
     /**
      * Returns the list of past meetings in which this contact has participated.
