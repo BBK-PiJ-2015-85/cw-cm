@@ -1239,6 +1239,94 @@ public class ContactManagerImplTest {
         assertEquals(plus1Hour, testList.get(4).getDate());
     }
 
+    /**
+     * Test addMeetingNotes()
+     */
+
+    @Test(expected = NullPointerException.class)
+    public void testsNullNotes() {
+        cm1.addNewPastMeeting(testSet1, minus1Hour, "");
+        cm1.addMeetingNotes(1, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsNoMeetingsExist() {
+        cm1.addMeetingNotes(1, "no meeting");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsWrongMeetingId() {
+        cm1.addNewPastMeeting(testSet1, minus1Hour, "");
+        cm1.addMeetingNotes(2, "wrong id");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsZeroId() {
+        cm1.addNewPastMeeting(testSet1, minus1Day, "");
+        cm1.addMeetingNotes(0, "zero id");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsNegativeId() {
+        cm2.addNewPastMeeting(testSet2, minus1Month, "");
+        cm2.addMeetingNotes(-1, "negative id");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testsMeetingStillInFuture() {
+        cm1.addFutureMeeting(testSet1, plus1Year);
+        cm1.addMeetingNotes(1, "not happened yet");
+    }
+
+    @Test
+    public void testsAddExtraNotesToPastMeeting() {
+        //assumption is that this will add to existing notes
+        cm1.addNewPastMeeting(testSet1, minus1Month, "notes");
+        PastMeeting pm = cm1.addMeetingNotes(1, "more notes");
+        assertEquals("notes; more notes", pm.getNotes());
+        assertEquals("notes; more notes", cm1.getPastMeetingListFor(con1).get(0).getNotes());
+    }
+
+    @Test
+    public void testsAddExtraNotesWhenNoneBefore() {
+        cm2.addNewPastMeeting(testSet2, minus1Day, "");
+        cm2.addMeetingNotes(1, "new notes");
+        assertEquals("new notes", cm2.getPastMeetingListFor(con2).get(0).getNotes());
+    }
+
+    @Test
+    public void testsAddNotesToMultiplePastMeetings() {
+        cm3.addNewPastMeeting(testSet2, minus1Hour, "notes");
+        cm3.addNewPastMeeting(testSet2, minus1Day, "");
+        cm3.addNewPastMeeting(testSet3, minus1Month, "3");
+        PastMeeting pm = cm3.addMeetingNotes(3, "success");
+        cm3.addMeetingNotes(1, "");
+        cm3.addMeetingNotes(2, "cancelled");
+        assertEquals("3; success", pm.getNotes());
+        assertEquals("cancelled", cm3.getPastMeetingListFor(con2).get(1).getNotes());
+        assertEquals("notes", cm3.getPastMeetingListFor(con1).get(2).getNotes());
+    }
+
+    @Test
+    public void testsMutipleFutureMeetingsNowPast() {
+        cm3.addFutureMeeting(testSet1, plus1Sec);
+        cm3.addFutureMeeting(testSet2, plus1Sec);
+        cm3.addFutureMeeting(testSet3, plus1Sec);
+        assertEquals(3, cm3.getFutureMeetingList(con1).size());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            System.out.println(); //catch not needed
+        }
+        PastMeeting pm1 = cm3.addMeetingNotes(1, "first");
+        PastMeeting pm2 = cm3.addMeetingNotes(2, "second");
+        PastMeeting pm3 = cm3.addMeetingNotes(3, "third");
+        assertTrue(cm3.getFutureMeetingList(con1).isEmpty());
+        assertEquals(3, cm3.getPastMeetingListFor(con1).size());
+        assertEquals("first", pm1.getNotes());
+    }
+
+
 
 
 
