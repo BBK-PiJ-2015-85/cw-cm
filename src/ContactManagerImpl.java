@@ -10,6 +10,8 @@ public class ContactManagerImpl implements ContactManager {
     private Set<Contact> myContacts;
     private Set<FutureMeeting> futureMeetings;
     private Set<PastMeeting> pastMeetings;
+    private static final int START = 0;
+    private static final int NEXT = 1;
 
     public ContactManagerImpl() {
         contactIdCount = 0;
@@ -150,7 +152,7 @@ public class ContactManagerImpl implements ContactManager {
                 resultList.add(m);
             }
         }
-        resultList.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+        sortMeetingList(resultList);
         return resultList;
     }
 
@@ -271,4 +273,17 @@ public class ContactManagerImpl implements ContactManager {
      * closed and when/if the user requests it.
      */
     public void flush() {}
+
+    private List<? extends Meeting> sortMeetingList(List<? extends Meeting> list) {
+        for(int i = START; i < list.size() - NEXT; i++) {
+            if (list.get(i).getDate().get(Calendar.HOUR_OF_DAY) == list.get(i + NEXT).getDate().get(Calendar.HOUR_OF_DAY)
+                    && list.get(i).getDate().get(Calendar.MINUTE) == list.get(i + NEXT).getDate().get(Calendar.MINUTE)
+                    && list.get(i).getContacts().equals(list.get(i + NEXT).getContacts())) {
+                list.remove(i);
+                i--;
+            }
+        }
+        list.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+        return list;
+    }
 }

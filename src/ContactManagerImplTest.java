@@ -1062,9 +1062,9 @@ public class ContactManagerImplTest {
 
     @Test
     public void testsTwoMeetingsOnSameDay() {
-        cm2.addFutureMeeting(testSet2, plus1Month);
-        cm2.addFutureMeeting(testSet2, plus1Month);
-        List<Meeting> testList = cm2.getMeetingListOn(plus1Month);
+        cm2.addFutureMeeting(testSet2, plus1Hour);
+        cm2.addFutureMeeting(testSet2, plus1Min);
+        List<Meeting> testList = cm2.getMeetingListOn(plus1Hour);
         assertEquals(2, testList.size());
         assertEquals(testSet2, testList.get(0).getContacts());
         assertEquals(testSet2, testList.get(1).getContacts());
@@ -1141,6 +1141,8 @@ public class ContactManagerImplTest {
         assertEquals(minus1Min, testList.get(0).getDate());
         assertEquals(plus1Hour, testList.get(1).getDate());
     }
+
+
 
 
 
