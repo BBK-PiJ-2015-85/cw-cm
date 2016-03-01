@@ -912,7 +912,7 @@ public class ContactManagerImplTest {
     public void testsDuplicateMeeting() {
         cm1.addFutureMeeting(testSet1, plus1Month);
         cm1.addFutureMeeting(testSet1, plus1Month);
-        assertEquals(1, cm1.getFutureMeetingList(con1));
+        assertEquals(1, cm1.getFutureMeetingList(con1).size());
     }
 
     @Test
@@ -922,26 +922,28 @@ public class ContactManagerImplTest {
         cm3.addFutureMeeting(testSet3, plus1Year);
         cm3.addFutureMeeting(testSet2, plus1Month);
         cm3.addFutureMeeting(testSet2, plus1Month);
-        assertEquals(2, cm3.getFutureMeetingList(con2));
+        assertEquals(2, cm3.getFutureMeetingList(con2).size());
         assertEquals(plus1Month, cm3.getFutureMeetingList(con2).get(0).getDate());
-        assertEquals(plus1Year, cm3.getFutureMeetingList(con2).get(0).getDate());
+        assertEquals(plus1Year, cm3.getFutureMeetingList(con2).get(1).getDate());
     }
 
     @Test
     public void testsSimilarMeetingsButDifferentWithSomeDuplicatesToo() {
         cm3.addFutureMeeting(testSet2, plus1Min);
         cm3.addFutureMeeting(testSet1, plus1Min);
-        cm3.addFutureMeeting(testSet2, plus1Hour);
-        cm3.addFutureMeeting(testSet2, plus1Sec);
-        cm3.addFutureMeeting(testSet2, plus1Sec);
-        cm3.addFutureMeeting(testSet3, plus1Sec);
         cm3.addFutureMeeting(testSet1, plus1Min);
-        assertEquals(5, cm3.getFutureMeetingList(con1));
-        assertEquals(plus1Sec, cm3.getFutureMeetingList(con1).get(0).getDate());
-        assertEquals(plus1Sec, cm3.getFutureMeetingList(con1).get(1).getDate());
-        assertEquals(plus1Min, cm3.getFutureMeetingList(con1).get(2).getDate());
-        assertEquals(plus1Min, cm3.getFutureMeetingList(con1).get(3).getDate());
-        assertEquals(plus1Hour, cm3.getFutureMeetingList(con1).get(4).getDate());
+        cm3.addFutureMeeting(testSet2, plus1Hour);
+        cm3.addFutureMeeting(testSet2, plus1Day);
+        cm3.addFutureMeeting(testSet2, plus1Day);
+        cm3.addFutureMeeting(testSet3, plus1Day);
+        cm3.addFutureMeeting(testSet2, plus1Min);
+        cm3.addFutureMeeting(testSet1, plus1Min);
+        assertEquals(5, cm3.getFutureMeetingList(con1).size());
+        assertEquals(plus1Min, cm3.getFutureMeetingList(con1).get(0).getDate());
+        assertEquals(plus1Min, cm3.getFutureMeetingList(con1).get(1).getDate());
+        assertEquals(plus1Hour, cm3.getFutureMeetingList(con1).get(2).getDate());
+        assertEquals(plus1Day, cm3.getFutureMeetingList(con1).get(3).getDate());
+        assertEquals(plus1Day, cm3.getFutureMeetingList(con1).get(4).getDate());
     }
 
     /**

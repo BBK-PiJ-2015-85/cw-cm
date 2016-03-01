@@ -119,7 +119,7 @@ public class ContactManagerImpl implements ContactManager {
                 resultList.add(m);
             }
         }
-        resultList.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+        sortMeetingList(resultList);
         return resultList;
     }
 
@@ -181,7 +181,7 @@ public class ContactManagerImpl implements ContactManager {
                 resultList.add(m);
             }
         }
-        resultList.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+        sortMeetingList(resultList);
         return resultList;
     }
 
@@ -274,16 +274,38 @@ public class ContactManagerImpl implements ContactManager {
      */
     public void flush() {}
 
+
+    /**
+     * Helper method to remove duplicate meetings and sort
+     * the list into chronological order.
+     *
+     * It is assumed that a meeting can be of the same hour but
+     * different minute (e.g. to allow for half hour meetings)
+     * and also that it is possible to "double book" i.e. you
+     * can have two meetings at the same time but with different
+     * set of contacts.
+     *
+     * @param list the list that needs to be sorted.
+     * @return the sorted list of meetings.
+     */
     private List<? extends Meeting> sortMeetingList(List<? extends Meeting> list) {
+
+        //first sort list into chronological order using lambda
+        list.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+
+        //now iterate through list and remove any duplicate meetings
         for(int i = START; i < list.size() - NEXT; i++) {
-            if (list.get(i).getDate().get(Calendar.HOUR_OF_DAY) == list.get(i + NEXT).getDate().get(Calendar.HOUR_OF_DAY)
-                    && list.get(i).getDate().get(Calendar.MINUTE) == list.get(i + NEXT).getDate().get(Calendar.MINUTE)
-                    && list.get(i).getContacts().equals(list.get(i + NEXT).getContacts())) {
-                list.remove(i);
-                i--;
+            for (int j = i + NEXT; j < list.size(); j++) {
+                if (list.get(i).getDate().get(Calendar.YEAR) == list.get(j).getDate().get(Calendar.YEAR)
+                        && list.get(i).getDate().get(Calendar.DAY_OF_YEAR) == list.get(j).getDate().get(Calendar.DAY_OF_YEAR)
+                        && list.get(i).getDate().get(Calendar.HOUR_OF_DAY) == list.get(j).getDate().get(Calendar.HOUR_OF_DAY)
+                        && list.get(i).getDate().get(Calendar.MINUTE) == list.get(j).getDate().get(Calendar.MINUTE)
+                        && list.get(i).getContacts().equals(list.get(j).getContacts())) {
+                    list.remove(j);
+                    j--;
+                }
             }
         }
-        list.sort((x, y) -> x.getDate().compareTo(y.getDate()));
         return list;
     }
 }
