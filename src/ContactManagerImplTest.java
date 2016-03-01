@@ -1030,6 +1030,121 @@ public class ContactManagerImplTest {
         }
     }
 
+    /**
+     * Test getMeetingListOn(Calendar date)
+     */
+
+    @Test(expected = NullPointerException.class)
+    public void testsNullDate() {
+        cm2.getMeetingListOn(null);
+    }
+
+    @Test
+    public void testsNoMeetings() {
+        assertTrue(cm1.getMeetingListOn(plus1Day).isEmpty());
+    }
+
+    @Test
+    public void testsNoMeetingsOnDateGiven() {
+        cm3.addFutureMeeting(testSet1, plus1Month);
+        cm3.addFutureMeeting(testSet3, plus1Year);
+        assertTrue(cm3.getMeetingListOn(plus1Hour).isEmpty());
+        assertTrue(cm3.getMeetingListOn(minus1Day).isEmpty());
+    }
+
+    @Test
+    public void testsOneMeeting() {
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        List<Meeting> testList = cm1.getMeetingListOn(plus1Day);
+        assertEquals(1, testList.size());
+        assertEquals(testSet1, testList.get(0).getContacts());
+    }
+
+    @Test
+    public void testsTwoMeetingsOnSameDay() {
+        cm2.addFutureMeeting(testSet2, plus1Month);
+        cm2.addFutureMeeting(testSet2, plus1Month);
+        List<Meeting> testList = cm2.getMeetingListOn(plus1Month);
+        assertEquals(2, testList.size());
+        assertEquals(testSet2, testList.get(0).getContacts());
+        assertEquals(testSet2, testList.get(1).getContacts());
+    }
+
+    @Test
+    public void testsThreeMeetings() {
+        cm3.addFutureMeeting(testSet1, plus1Hour);
+        cm3.addFutureMeeting(testSet3, plus1Min);
+        cm3.addFutureMeeting(testSet2, plus1Sec);
+        List<Meeting> testList = cm3.getMeetingListOn(current);
+        assertEquals(3, testList.size());
+        assertEquals(plus1Sec, testList.get(0).getDate());
+        assertEquals(plus1Min, testList.get(1).getDate());
+        assertEquals(plus1Hour, testList.get(2).getDate());
+    }
+
+    @Test
+    public void testsThreePastMeetings() {
+        cm3.addNewPastMeeting(testSet2, minus1Sec, "1");
+        cm3.addNewPastMeeting(testSet3, minus1Hour, "2");
+        cm3.addNewPastMeeting(testSet1, minus1Min, "3");
+        List<Meeting> testList = cm3.getMeetingListOn(current);
+        assertEquals(3, testList.size());
+        assertEquals(minus1Hour, testList.get(0).getDate());
+        assertEquals(minus1Min, testList.get(1).getDate());
+        assertEquals(minus1Sec, testList.get(2).getDate());
+    }
+
+    @Test
+    public void testsFutureAndPastOnSameDay() {
+        cm3.addFutureMeeting(testSet1, plus1Hour);
+        cm3.addNewPastMeeting(testSet2, minus1Hour, "test");
+        List<Meeting> testList = cm3.getMeetingListOn(current);
+        assertEquals(2, testList.size());
+        assertEquals(minus1Hour, testList.get(0).getDate());
+        assertEquals(plus1Hour, testList.get(1).getDate());
+    }
+
+    @Test
+    public void testsChronologyWithSixMeetingsOnSameDay() {
+        cm3.addFutureMeeting(testSet2, plus1Hour);
+        cm3.addFutureMeeting(testSet1, plus1Min);
+        cm3.addFutureMeeting(testSet3, plus1Sec);
+        cm3.addNewPastMeeting(testSet1, minus1Sec, "test1");
+        cm3.addNewPastMeeting(testSet2, minus1Min, "test2");
+        cm3.addNewPastMeeting(testSet3, minus1Hour, "test3");
+        List<Meeting> testList = cm3.getMeetingListOn(current);
+        assertEquals(6, testList.size());
+        assertEquals(minus1Hour, testList.get(0).getDate());
+        assertEquals(minus1Min, testList.get(1).getDate());
+        assertEquals(minus1Sec, testList.get(2).getDate());
+        assertEquals(plus1Sec, testList.get(3).getDate());
+        assertEquals(plus1Min, testList.get(4).getDate());
+        assertEquals(plus1Hour, testList.get(5).getDate());
+    }
+
+    @Test
+    public void testsDuplicatesAreRemoved() {
+        cm3.addFutureMeeting(testSet2, plus1Month);
+        cm3.addFutureMeeting(testSet2, plus1Month);
+        assertEquals(1, cm3.getMeetingListOn(plus1Month).size());
+    }
+
+    @Test
+    public void testsMultipleDuplicatesBothPastAndFuture() {
+        cm3.addFutureMeeting(testSet2, plus1Hour);
+        cm3.addFutureMeeting(testSet2, plus1Hour);
+        cm3.addNewPastMeeting(testSet3, minus1Min, "test");
+        cm3.addNewPastMeeting(testSet3, minus1Min, "test duplicate");
+        cm3.addNewPastMeeting(testSet3, minus1Min, "another test duplicate");
+        List<Meeting> testList = cm3.getMeetingListOn(current);
+        assertEquals(2, testList.size());
+        assertEquals(minus1Min, testList.get(0).getDate());
+        assertEquals(plus1Hour, testList.get(1).getDate());
+    }
+
+
+
+
 
 
 

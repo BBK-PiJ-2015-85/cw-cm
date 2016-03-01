@@ -252,16 +252,4 @@ public class ContactManagerImpl implements ContactManager {
      * closed and when/if the user requests it.
      */
     public void flush() {}
-
-
-    /**
-     * Sorts a list of meetings into chronological order.
-     *
-     * @param listToSort a list of meetings to be sorted.
-     * @return the list of meetings sorted chronologically.
-     */
-    public List<? extends Meeting> sortMeetingList(List<? extends Meeting> listToSort) {
-        listToSort.sort((x, y) -> x.getDate().compareTo(y.getDate()));
-        return listToSort;
-    }
 }
