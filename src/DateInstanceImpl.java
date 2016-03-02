@@ -4,8 +4,8 @@ import java.util.Calendar;
  * Created by James Pickles on 02/03/2016.
  */
 public class DateInstanceImpl implements DateInstance {
-    private boolean dateChanged;
-    private Calendar fakeDate;
+    private static boolean dateChanged;
+    private static Calendar fakeDate;
 
     public Calendar getDateInstance() {
         if (!dateChanged) {

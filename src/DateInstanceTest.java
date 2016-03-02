@@ -18,6 +18,7 @@ public class DateInstanceTest {
     @Before
     public void setUp() {
         di = new DateInstanceImpl();
+        di.reset();
     }
 
     @Test

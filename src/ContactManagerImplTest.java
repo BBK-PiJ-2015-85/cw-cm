@@ -12,11 +12,15 @@ public class ContactManagerImplTest {
     ContactManager cm, cm1, cm2, cm3;
     Set<Contact> testSet1, testSet2, testSet3;
     Contact con1, con2, con3;
-    Calendar current, plus10Ms, plus1Sec, plus1Min, plus1Hour, plus1Day, plus1Month, plus1Year,
+    Calendar current, plus1Sec, plus1Min, plus1Hour, plus1Day, plus1Month, plus1Year,
              minus1Min, minus1Sec, minus1Hour, minus1Day, minus1Month, minus1Year;
+    DateInstance di = new DateInstanceImpl();
 
     @Before
     public void setUp() {
+
+        //reset DateInstance so it returns current date
+        di.reset();
 
         //create 3 test contacts
         con1 = new ContactImpl(1, "Con1", "test contact 1");
@@ -58,7 +62,6 @@ public class ContactManagerImplTest {
         current = new GregorianCalendar();
         plus1Sec = new GregorianCalendar();
         minus1Sec = new GregorianCalendar();
-        plus10Ms = new GregorianCalendar();
         plus1Min = new GregorianCalendar();
         plus1Hour = new GregorianCalendar();
         plus1Day = new GregorianCalendar();
@@ -69,7 +72,6 @@ public class ContactManagerImplTest {
         minus1Day = new GregorianCalendar();
         minus1Month = new GregorianCalendar();
         minus1Year = new GregorianCalendar();
-        plus10Ms.add(Calendar.MILLISECOND, 10);
         plus1Sec.add(Calendar.SECOND, 1);
         plus1Min.add(Calendar.MINUTE, 1);
         plus1Hour.add(Calendar.HOUR, 1);
@@ -1312,15 +1314,10 @@ public class ContactManagerImplTest {
 
     @Test
     public void testsMultipleFutureMeetingsNowPast() {
-        cm3.addFutureMeeting(testSet1, plus10Ms);
-        cm3.addFutureMeeting(testSet2, plus10Ms);
-        cm3.addFutureMeeting(testSet3, plus10Ms);
-        assertEquals(3, cm3.getFutureMeetingList(con1).size());
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException ex) {
-            System.out.println(); //catch not needed
-        }
+        cm3.addFutureMeeting(testSet1, plus1Year);
+        cm3.addFutureMeeting(testSet2, plus1Day);
+        cm3.addFutureMeeting(testSet3, plus1Month);
+        di.changeDate(new GregorianCalendar(2020, 10, 3));
         PastMeeting pm1 = cm3.addMeetingNotes(1, "first");
         PastMeeting pm2 = cm3.addMeetingNotes(2, "second");
         PastMeeting pm3 = cm3.addMeetingNotes(3, "third");
@@ -1330,6 +1327,9 @@ public class ContactManagerImplTest {
         assertTrue(cm3.getFutureMeetingList(con1).isEmpty());
         assertNotNull(cm3.getPastMeeting(1));
     }
+
+
+
 
 
 
