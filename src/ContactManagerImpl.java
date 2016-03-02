@@ -13,12 +13,14 @@ public class ContactManagerImpl implements ContactManager {
     private static final int START = 0;
     private static final int NEXT = 1;
 
+
     public ContactManagerImpl() {
         contactIdCount = 0;
         meetingIdCount = 0;
         myContacts = new HashSet<>();
         futureMeetings = new HashSet<>();
         pastMeetings = new HashSet<>();
+
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
