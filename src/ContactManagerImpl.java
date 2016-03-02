@@ -12,6 +12,7 @@ public class ContactManagerImpl implements ContactManager {
     private Set<PastMeeting> pastMeetings;
     private static final int START = 0;
     private static final int NEXT = 1;
+    private DateInstance currentDate;
 
 
     public ContactManagerImpl() {
@@ -20,15 +21,14 @@ public class ContactManagerImpl implements ContactManager {
         myContacts = new HashSet<>();
         futureMeetings = new HashSet<>();
         pastMeetings = new HashSet<>();
-
+        currentDate = new DateInstanceImpl();
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
         if (contacts == null || date == null) {
             throw new NullPointerException("Contacts and date must not be null.");
         }
-        Calendar currentDate = new GregorianCalendar();
-        if (!date.after(currentDate)) {
+        if (!date.after(currentDate.getDateInstance())) {
             throw new IllegalArgumentException("Date must be in the future.");
         }
         if (!myContacts.containsAll(contacts)) {
@@ -195,8 +195,7 @@ public class ContactManagerImpl implements ContactManager {
         if (contacts.isEmpty()) {
             throw new IllegalArgumentException("Contact set must not be empty.");
         }
-        Calendar currentDate = new GregorianCalendar();
-        if (!date.before(currentDate)) {
+        if (!date.before(currentDate.getDateInstance())) {
             throw new IllegalArgumentException("Date must be in the past.");
         }
         if (!myContacts.containsAll(contacts)) {
@@ -228,8 +227,7 @@ public class ContactManagerImpl implements ContactManager {
         if (text == null) {
             throw new NullPointerException("Notes must not be null.");
         }
-        Calendar currentDate = new GregorianCalendar();
-        if (!getMeeting(id).getDate().before(currentDate)) {
+        if (!getMeeting(id).getDate().before(currentDate.getDateInstance())) {
             throw new IllegalStateException("Cannot add notes to meetings that are yet to occur.");
         }
         for (Iterator<FutureMeeting> iterator = futureMeetings.iterator(); iterator.hasNext();) {
