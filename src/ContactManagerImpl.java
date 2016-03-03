@@ -221,7 +221,6 @@ public class ContactManagerImpl implements ContactManager {
      */
     public PastMeeting addMeetingNotes(int id, String text) {
         updateMeetings();
-        PastMeeting pm;
         if (id <= 0 || id > meetingIdCount) {
             throw new IllegalArgumentException("Meeting ID does not exist.");
         }
@@ -231,7 +230,7 @@ public class ContactManagerImpl implements ContactManager {
         if (!getMeeting(id).getDate().before(currentDate.getDateInstance())) {
             throw new IllegalStateException("Cannot add notes to meetings that are yet to occur.");
         }
-        pm = new PastMeetingImpl(id, getPastMeeting(id).getDate(), getPastMeeting(id).getContacts(), text);
+        PastMeeting pm = new PastMeetingImpl(id, getPastMeeting(id).getDate(), getPastMeeting(id).getContacts(), text);
         for (Iterator<PastMeeting> iterator = pastMeetings.iterator(); iterator.hasNext();) {
             PastMeeting current = iterator.next();
             if (current.getId() == id) {
@@ -283,6 +282,7 @@ public class ContactManagerImpl implements ContactManager {
             for (Contact c : myContacts) {
                 if (id == c.getId()) {
                     matchingIds.add(c);
+                    break;
                 }
             }
         }

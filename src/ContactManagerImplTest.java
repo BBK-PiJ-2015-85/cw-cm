@@ -1,6 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -15,10 +16,15 @@ public class ContactManagerImplTest {
     Calendar current, plus1Sec, plus1Min, plus1Hour, plus1Day, plus1Month, plus1Year,
              minus1Min, minus1Sec, minus1Hour, minus1Day, minus1Month, minus1Year;
     DateInstance di = new DateInstanceImpl();
+    final File contacts = new File("contacts.txt");
 
     @Before
     public void setUp() {
 
+        //clear existing data from file
+        if (contacts.exists()) {
+            contacts.delete();
+        }
         //reset DateInstance so it returns current date
         di.reset();
 
@@ -1404,6 +1410,116 @@ public class ContactManagerImplTest {
         assertEquals("past 4", pm4.getNotes());
         assertEquals(4, cm3.getPastMeetingListFor(con1).size());
     }
+
+    /**
+     * Test flush()
+     */
+
+    @Test
+    public void testNoDataSaved() {
+        cm.flush();
+        ContactManager test = new ContactManagerImpl();
+        assertTrue(test.getContacts("").isEmpty());
+    }
+
+    @Test
+    public void testsOneContactSaved() {
+        cm1.flush();
+        cm = new ContactManagerImpl();
+        assertEquals(1, cm.getContacts("").size());
+        assertTrue(cm.getContacts(1).contains(con1));
+    }
+
+    @Test
+    public void testsMultipleContactsSaved() {
+        cm3.flush();
+        cm = new ContactManagerImpl();
+        assertEquals(3, cm.getContacts("").size());
+        assertEquals(cm3.getContacts(""), cm.getContacts());
+    }
+
+    @Test
+    public void testsFutureMeetingsSaved() {
+        cm3.addFutureMeeting(testSet1, plus1Day);
+        cm3.addFutureMeeting(testSet3, plus1Month);
+        cm3.flush();
+        cm = new ContactManagerImpl();
+        assertEquals(2, cm.getFutureMeetingList(con1).size());
+        assertEquals(plus1Month, cm.getFutureMeeting(2).getDate());
+        assertEquals(plus1Day, cm.getPastMeetingListFor(con1).get(0).getDate());
+    }
+
+    @Test
+    public void testsPastMeetingsSaved() {
+        cm3.addNewPastMeeting(testSet1, minus1Hour, "Past meeting");
+        cm3.addNewPastMeeting(testSet2, minus1Day, "other");
+        cm3.flush();
+        cm = new ContactManagerImpl();
+        assertEquals(2, cm.getPastMeetingListFor(con1).size());
+        assertEquals("Past meeting", cm.getPastMeetingListFor(con1).get(1).getNotes());
+        assertEquals("other", cm.getPastMeeting(2).getNotes());
+    }
+
+    @Test
+    public void testsFutureAndPastTogether() {
+        cm2.addFutureMeeting(testSet1, plus1Day);
+        cm2.addNewPastMeeting(testSet1, minus1Day, "");
+        cm2.flush();
+        cm = new ContactManagerImpl();
+        assertEquals(new PastMeetingImpl(2, minus1Day, testSet1, ""), cm.getPastMeeting(2));
+        assertEquals(plus1Day, cm.getMeeting(1).getDate());
+    }
+
+    @Test
+    public void testsOverWrite() {
+        cm3.addFutureMeeting(testSet1, plus1Month);
+        cm3.addFutureMeeting(testSet1, plus1Hour);
+        cm3.flush();
+        cm = new ContactManagerImpl();
+        assertEquals(2, cm.getFutureMeetingList(con1).size());
+        di.changeDate(plus1Day);
+        cm3.addFutureMeeting(testSet2, plus1Day);
+        cm3.addFutureMeeting(testSet3, plus1Year);
+        cm3.flush();
+        cm = new ContactManagerImpl();
+        assertEquals(3, cm.getFutureMeetingList(con1).size());
+        assertEquals(1, cm.getPastMeetingListFor(con1).size());
+        assertEquals(plus1Year, cm.getFutureMeetingList(con1).get(2).getDate());
+    }
+
+    @Test
+    public void checkIdCountWorkingAfterSaving() {
+        cm3.flush();
+        cm = new ContactManagerImpl();
+        int id = cm.addNewContact("new guy", "test");
+        assertEquals(3, id);
+        cm.flush();
+        cm2 = new ContactManagerImpl();
+        id = cm2.addNewContact("another new guy", "another test");
+        assertEquals(4, id);
+    }
+
+    @Test
+    public void checkMeetingIdCountAfterSaving() {
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        cm1.flush();
+        cm = new ContactManagerImpl();
+        int id = cm.addFutureMeeting(testSet1, plus1Month);
+        assertEquals(2, id);
+        cm.flush();
+        cm2 = new ContactManagerImpl();
+        id = cm2.addFutureMeeting(testSet1, plus1Month);
+        assertEquals(3, id);
+    }
+
+    @Test
+    public void checkOldContactsOverwritten() {
+        cm1.flush();
+        cm3 = new ContactManagerImpl();
+        assertEquals(1, cm3.getContacts("").size());
+    }
+
+
 
 
 
