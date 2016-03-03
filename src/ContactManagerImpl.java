@@ -41,15 +41,14 @@ public class ContactManagerImpl implements ContactManager {
 
 
     public PastMeeting getPastMeeting(int id) {
+        updateMeetings();
         for (PastMeeting m : pastMeetings) {
             if (id == m.getId()) {
                 return m;
             }
         }
-        for (FutureMeeting m : futureMeetings) {
-            if (id == m.getId()) {
-                throw new IllegalStateException("ID provided must be for a past meeting.");
-            }
+        if (id > 0 && id <= meetingIdCount) {
+            throw new IllegalStateException("ID provided must be for a past meeting.");
         }
         return null;
     }
@@ -63,15 +62,14 @@ public class ContactManagerImpl implements ContactManager {
      * in the past
      */
     public FutureMeeting getFutureMeeting(int id) {
+        updateMeetings();
         for (FutureMeeting m : futureMeetings) {
             if (id == m.getId()) {
                 return m;
             }
         }
-        for (PastMeeting m : pastMeetings) {
-            if (id == m.getId()) {
-                throw new IllegalArgumentException("ID provided must be for a future meeting.");
-            }
+        if (id > 0 && id <= meetingIdCount) {
+            throw new IllegalArgumentException("ID provided must be for a future meeting.");
         }
         return null;
     }
@@ -109,6 +107,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws NullPointerException if the contact is null
      */
     public List<Meeting> getFutureMeetingList(Contact contact) {
+        updateMeetings();
         if (contact == null) {
             throw new NullPointerException("Contact must not be null.");
         }
@@ -171,6 +170,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws NullPointerException if the contact is null
      */
     public List<PastMeeting> getPastMeetingListFor(Contact contact) {
+        updateMeetings();
         if (contact == null) {
             throw new NullPointerException("Contact must not be null.");
         }
@@ -220,6 +220,7 @@ public class ContactManagerImpl implements ContactManager {
      * @throws NullPointerException if the notes are null
      */
     public PastMeeting addMeetingNotes(int id, String text) {
+        updateMeetings();
         PastMeeting pm;
         if (id <= 0 || id > meetingIdCount) {
             throw new IllegalArgumentException("Meeting ID does not exist.");
@@ -229,15 +230,6 @@ public class ContactManagerImpl implements ContactManager {
         }
         if (!getMeeting(id).getDate().before(currentDate.getDateInstance())) {
             throw new IllegalStateException("Cannot add notes to meetings that are yet to occur.");
-        }
-        for (Iterator<FutureMeeting> iterator = futureMeetings.iterator(); iterator.hasNext();) {
-            FutureMeeting current = iterator.next();
-            if (current.getId() == id) {
-                pm = new PastMeetingImpl(id, current.getDate(), current.getContacts(), text);
-                pastMeetings.add(pm);
-                iterator.remove();
-                return pm;
-            }
         }
         pm = new PastMeetingImpl(id, getPastMeeting(id).getDate(), getPastMeeting(id).getContacts(), text);
         for (Iterator<PastMeeting> iterator = pastMeetings.iterator(); iterator.hasNext();) {
@@ -338,5 +330,23 @@ public class ContactManagerImpl implements ContactManager {
             }
         }
         return list;
+    }
+
+    /**
+     * This is a method to update any future meetings that have now happened
+     * and turns them into past meetings (and updates both meeting sets accordingly).
+     *
+     * It will be called before the execution of methods that specifically retrieve
+     * either a past meeting or a future meeting, or a list of either type. This will make sure that when
+     * requesting date specific meeting information the results are accurate.
+     */
+    private void updateMeetings() {
+        for (Iterator<FutureMeeting> iterator = futureMeetings.iterator(); iterator.hasNext();) {
+            FutureMeeting current = iterator.next();
+            if (!current.getDate().after(currentDate.getDateInstance())) {
+                pastMeetings.add(new PastMeetingImpl(current.getId(), current.getDate(), current.getContacts(), ""));
+                iterator.remove();
+            }
+        }
     }
 }
