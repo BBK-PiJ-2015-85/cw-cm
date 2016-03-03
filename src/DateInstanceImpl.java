@@ -8,11 +8,7 @@ public class DateInstanceImpl implements DateInstance {
     private static Calendar fakeDate;
 
     public Calendar getDateInstance() {
-        if (!dateChanged) {
-            return Calendar.getInstance();
-        } else {
-            return fakeDate;
-        }
+        return (!dateChanged) ? Calendar.getInstance() : fakeDate;
     }
 
     public void changeDate(Calendar newDate) {
