@@ -16,7 +16,7 @@ public class ContactManagerImplTest {
     Calendar current, plus1Sec, plus1Min, plus1Hour, plus1Day, plus1Month, plus1Year,
              minus1Min, minus1Sec, minus1Hour, minus1Day, minus1Month, minus1Year;
     DateInstance di = new DateInstanceImpl();
-    final File contacts = new File("contacts.txt");
+    final File contacts = new File("contacts.xml");
 
     @Before
     public void setUp() {
@@ -1411,6 +1411,7 @@ public class ContactManagerImplTest {
         assertEquals(4, cm3.getPastMeetingListFor(con1).size());
     }
 
+
     /**
      * Test flush()
      */
@@ -1435,7 +1436,7 @@ public class ContactManagerImplTest {
         cm3.flush();
         cm = new ContactManagerImpl();
         assertEquals(3, cm.getContacts("").size());
-        assertEquals(cm3.getContacts(""), cm.getContacts());
+        assertEquals(cm3.getContacts(""), cm.getContacts(""));
     }
 
     @Test
@@ -1446,7 +1447,7 @@ public class ContactManagerImplTest {
         cm = new ContactManagerImpl();
         assertEquals(2, cm.getFutureMeetingList(con1).size());
         assertEquals(plus1Month, cm.getFutureMeeting(2).getDate());
-        assertEquals(plus1Day, cm.getPastMeetingListFor(con1).get(0).getDate());
+        assertEquals(plus1Day, cm.getFutureMeetingList(con1).get(0).getDate());
     }
 
     @Test
@@ -1473,11 +1474,11 @@ public class ContactManagerImplTest {
     @Test
     public void testsOverWrite() {
         cm3.addFutureMeeting(testSet1, plus1Month);
-        cm3.addFutureMeeting(testSet1, plus1Hour);
+        cm3.addFutureMeeting(testSet1, plus1Min);
         cm3.flush();
         cm = new ContactManagerImpl();
         assertEquals(2, cm.getFutureMeetingList(con1).size());
-        di.changeDate(plus1Day);
+        di.changeDate(plus1Hour);
         cm3.addFutureMeeting(testSet2, plus1Day);
         cm3.addFutureMeeting(testSet3, plus1Year);
         cm3.flush();
@@ -1492,11 +1493,11 @@ public class ContactManagerImplTest {
         cm3.flush();
         cm = new ContactManagerImpl();
         int id = cm.addNewContact("new guy", "test");
-        assertEquals(3, id);
+        assertEquals(4, id);
         cm.flush();
         cm2 = new ContactManagerImpl();
         id = cm2.addNewContact("another new guy", "another test");
-        assertEquals(4, id);
+        assertEquals(5, id);
     }
 
     @Test
@@ -1518,37 +1519,5 @@ public class ContactManagerImplTest {
         cm3 = new ContactManagerImpl();
         assertEquals(1, cm3.getContacts("").size());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 /**
@@ -13,14 +14,33 @@ public class ContactManagerImpl implements ContactManager {
     private static final int START = 0;
     private static final int NEXT = 1;
     private DateInstance currentDate;
+    private final String fileName = "contacts.xml";
 
+
+    @SuppressWarnings("unchecked")
 
     public ContactManagerImpl() {
-        contactIdCount = 0;
-        meetingIdCount = 0;
-        myContacts = new HashSet<>();
-        futureMeetings = new HashSet<>();
-        pastMeetings = new HashSet<>();
+        File savedData = new File(fileName);
+        if (savedData.exists() && savedData.length() > 0) {
+            try (ObjectInputStream
+                         decode = new ObjectInputStream(
+                    new BufferedInputStream(
+                            new FileInputStream(fileName)))){
+                myContacts = (Set<Contact>) decode.readObject();
+                futureMeetings = (Set<FutureMeeting>) decode.readObject();
+                pastMeetings = (Set<PastMeeting>) decode.readObject();
+                contactIdCount = myContacts.size();
+                meetingIdCount = futureMeetings.size() + pastMeetings.size();
+            } catch (IOException | ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            contactIdCount = 0;
+            meetingIdCount = 0;
+            myContacts = new HashSet<>();
+            futureMeetings = new HashSet<>();
+            pastMeetings = new HashSet<>();
+        }
         currentDate = new DateInstanceImpl();
     }
 
@@ -295,9 +315,18 @@ public class ContactManagerImpl implements ContactManager {
      * This method must be executed when the program is
      * closed and when/if the user requests it.
      */
-    public void flush() {}
-
-
+    public void flush() {
+        try (ObjectOutputStream
+                     encode = new ObjectOutputStream(
+                new BufferedOutputStream(
+                        new FileOutputStream(fileName)))) {
+            encode.writeObject(myContacts);
+            encode.writeObject(futureMeetings);
+            encode.writeObject(pastMeetings);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     /**
      * Helper method to remove duplicate meetings and sort
      * the list into chronological order.

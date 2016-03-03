@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by James Pickles on 22/02/2016.
  */
-public class ContactImpl implements Contact {
+public class ContactImpl implements Contact, Serializable {
     private int contactId;
     private String contactName;
     private String contactNotes;

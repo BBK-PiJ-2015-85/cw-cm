@@ -1,13 +1,15 @@
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
 
 /**
  * Created by James Pickles on 22/02/2016.
  */
-public abstract class MeetingImpl implements Meeting {
+public abstract class MeetingImpl implements Meeting, Serializable {
     private int meetingId;
     private Calendar meetingDate;
     private Set<Contact> meetingAttendees;
+
 
     public MeetingImpl(int id, Calendar date, Set<Contact> attendees) {
         if (id <= 0) {
