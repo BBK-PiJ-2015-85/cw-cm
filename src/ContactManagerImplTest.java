@@ -624,6 +624,15 @@ public class ContactManagerImplTest {
         assertNull(cm3.getPastMeeting(-3));
     }
 
+    @Test
+    public void testsGetAFutureMeetingThatIsNowAPastMeeting() {
+        cm3.addFutureMeeting(testSet3, plus1Day);
+        cm3.addFutureMeeting(testSet2, plus1Month);
+        di.changeDate(plus1Year);
+        assertEquals(plus1Day, cm3.getPastMeeting(1).getDate());
+        assertEquals(plus1Month, cm3.getPastMeeting(2).getDate());
+    }
+
 
     /**
      * Test getFutureMeeting()
@@ -709,6 +718,14 @@ public class ContactManagerImplTest {
     public void testsGetFutureMeetingNegativeId() {
         cm1.addFutureMeeting(testSet1, plus1Year);
         assertNull(cm1.getFutureMeeting(-2));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testsTryingToRetrieveAFutureMeetingThatHasNowHappened() {
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        assertNotNull(cm1.getFutureMeeting(1));
+        di.changeDate(plus1Month);
+        cm1.getFutureMeeting(1);
     }
 
     @Test
@@ -950,6 +967,24 @@ public class ContactManagerImplTest {
         assertEquals(plus1Day, cm3.getFutureMeetingList(con1).get(4).getDate());
     }
 
+    @Test
+    public void testsFutureMeetingNowPast() {
+        cm1.addFutureMeeting(testSet1, plus1Day);
+        assertEquals(1, cm1.getFutureMeetingList(con1).size());
+        di.changeDate(plus1Month);
+        assertTrue(cm1.getFutureMeetingList(con1).isEmpty());
+    }
+
+    @Test
+    public void testsMultipleMeetingsSomeNowPastSomeStillFuture() {
+        cm3.addFutureMeeting(testSet2, plus1Min);
+        cm3.addFutureMeeting(testSet1, plus1Hour);
+        cm3.addFutureMeeting(testSet3, plus1Month);
+        assertEquals(3, cm3.getFutureMeetingList(con1).size());
+        di.changeDate(plus1Day);
+        assertEquals(1, cm3.getFutureMeetingList(con1).size());
+    }
+
     /**
      * Test getPastMeetingList(Contact)
      */
@@ -1110,6 +1145,30 @@ public class ContactManagerImplTest {
         assertEquals(minus1Min, testList.get(2).getDate());
         assertEquals(minus1Sec, testList.get(3).getDate());
         assertEquals(minus1Sec, testList.get(4).getDate());
+    }
+
+    @Test
+    public void testsGetListForFutureMeetingNowPast() {
+        cm2.addFutureMeeting(testSet1, plus1Day);
+        assertTrue(cm2.getPastMeetingListFor(con1).isEmpty());
+        di.changeDate(plus1Month);
+        assertEquals(1, cm2.getPastMeetingListFor(con1).size());
+        assertEquals(plus1Day, cm2.getPastMeetingListFor(con1).get(0).getDate());
+    }
+
+    @Test
+    public void testsMixOfFutureAndPastWithSomeFutureBecomingPastAndADuplicate() {
+        cm3.addNewPastMeeting(testSet1, minus1Day, "meeting1");
+        cm3.addFutureMeeting(testSet2, plus1Min);
+        cm3.addFutureMeeting(testSet2, plus1Min);
+        cm3.addFutureMeeting(testSet3, plus1Hour);
+        cm3.addFutureMeeting(testSet1, plus1Month);
+        assertEquals(1, cm3.getPastMeetingListFor(con1).size());
+        di.changeDate(plus1Day);
+        assertEquals(3, cm3.getPastMeetingListFor(con1).size());
+        assertEquals(minus1Day, cm3.getPastMeetingListFor(con1).get(0).getDate());
+        assertEquals(plus1Min, cm3.getPastMeetingListFor(con1).get(1).getDate());
+        assertEquals(plus1Hour, cm3.getPastMeetingListFor(con1).get(2).getDate());
     }
 
     /**
