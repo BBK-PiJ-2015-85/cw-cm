@@ -14,7 +14,7 @@ public class ContactManagerImpl implements ContactManager {
     private static final int START = 0;
     private static final int NEXT = 1;
     private DateInstance currentDate;
-    private final String fileName = "contacts.xml";
+    private final String fileName = "contacts.txt";
 
 
     @SuppressWarnings("unchecked")

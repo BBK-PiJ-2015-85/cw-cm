@@ -16,7 +16,7 @@ public class ContactManagerImplTest {
     Calendar current, plus1Sec, plus1Min, plus1Hour, plus1Day, plus1Month, plus1Year,
              minus1Min, minus1Sec, minus1Hour, minus1Day, minus1Month, minus1Year;
     DateInstance di = new DateInstanceImpl();
-    final File contacts = new File("contacts.xml");
+    final File contacts = new File("contacts.txt");
 
     @Before
     public void setUp() {
