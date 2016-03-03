@@ -1319,13 +1319,31 @@ public class ContactManagerImplTest {
         cm3.addFutureMeeting(testSet3, plus1Month);
         di.changeDate(new GregorianCalendar(2020, 10, 3));
         PastMeeting pm1 = cm3.addMeetingNotes(1, "first");
-        PastMeeting pm2 = cm3.addMeetingNotes(2, "second");
-        PastMeeting pm3 = cm3.addMeetingNotes(3, "third");
+        cm3.addMeetingNotes(2, "second");
+        cm3.addMeetingNotes(3, "third");
         assertTrue(cm3.getFutureMeetingList(con1).isEmpty());
         assertEquals(3, cm3.getPastMeetingListFor(con1).size());
         assertEquals("first", pm1.getNotes());
         assertTrue(cm3.getFutureMeetingList(con1).isEmpty());
         assertNotNull(cm3.getPastMeeting(1));
+    }
+
+    @Test
+    public void testsMultipleFutureMeetingsNowPastAndSomePastMeetings() {
+        cm3.addFutureMeeting(testSet2, plus1Month);
+        cm3.addFutureMeeting(testSet1, plus1Day);
+        cm3.addNewPastMeeting(testSet2, minus1Month, "original notes");
+        cm3.addNewPastMeeting(testSet3, minus1Day, "original notes 2");
+        assertEquals(2, cm3.getPastMeetingListFor(con1).size());
+        di.changeDate(plus1Year);
+        cm3.addMeetingNotes(1, "past 1");
+        cm3.addMeetingNotes(2, "past 2");
+        PastMeeting pm3 = cm3.addMeetingNotes(3, "past 3");
+        PastMeeting pm4 = cm3.addMeetingNotes(4, "past 4");
+        assertTrue(cm3.getFutureMeetingList(con1).isEmpty());
+        assertEquals("past 3", pm3.getNotes());
+        assertEquals("past 4", pm4.getNotes());
+        assertEquals(4, cm3.getPastMeetingListFor(con1).size());
     }
 
 
