@@ -119,8 +119,8 @@ public class ContactManagerImpl implements ContactManager {
             throw new NullPointerException("Date must not be null.");
         }
 
-        //need to search through both past and future lists for occasions when date is today and
-        //so may contain both.
+        //need to search through both past and future lists for occasions
+        // when date is today and so may contain both.
         List<Meeting> fmResultList = futureMeetings.stream()
                             .filter((s) -> s.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)
                                         && s.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR))
@@ -285,8 +285,9 @@ public class ContactManagerImpl implements ContactManager {
      * and turns them into past meetings (and updates both meeting sets accordingly).
      *
      * It will be called before the execution of methods that specifically retrieve
-     * either a past meeting or a future meeting, or a list of either type. This will make sure that when
-     * requesting date specific meeting information the results are accurate.
+     * either a past meeting or a future meeting, or a list of either type. This will
+     * make sure that when requesting date specific meeting information the results
+     * are accurate.
      */
     private void updateMeetings() {
 
