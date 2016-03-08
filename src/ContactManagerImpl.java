@@ -344,12 +344,14 @@ public class ContactManagerImpl implements ContactManager {
      * requesting date specific meeting information the results are accurate.
      */
     private void updateMeetings() {
-        for (Iterator<FutureMeeting> iterator = futureMeetings.iterator(); iterator.hasNext();) {
-            FutureMeeting current = iterator.next();
-            if (!current.getDate().after(currentDate.getDateInstance())) {
-                pastMeetings.add(new PastMeetingImpl(current.getId(), current.getDate(), current.getContacts(), ""));
-                iterator.remove();
-            }
-        }
+        //create a list of all Future Meetings that have now happened
+        List<FutureMeeting> occurred = futureMeetings.stream()
+                                                     .filter((s) -> s.getDate().before(currentDate.getDateInstance()))
+                                                     .collect(Collectors.toList());
+        //use the list to change each instance from a future to a past meeting
+        occurred.stream().forEach((s) -> {
+            pastMeetings.add(new PastMeetingImpl(s.getId(), s.getDate(), s.getContacts(), ""));
+            futureMeetings.remove(s);
+        });
     }
 }
