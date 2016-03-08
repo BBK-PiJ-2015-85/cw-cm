@@ -276,12 +276,7 @@ public class ContactManagerImpl implements ContactManager {
             if (id <= 0 || id > contactIdCount) {
                 throw new IllegalArgumentException("ID " + id + " does not correspond to any contact.");
             }
-            for (Contact c : myContacts) {
-                if (id == c.getId()) {
-                    matchingIds.add(c);
-                    break;
-                }
-            }
+            myContacts.stream().filter((s) -> s.getId() == id).anyMatch(matchingIds::add);
         }
         return matchingIds;
     }
