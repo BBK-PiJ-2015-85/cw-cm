@@ -261,13 +261,9 @@ public class ContactManagerImpl implements ContactManager {
         if (name == null) {
             throw new NullPointerException("String name cannot be null.");
         }
-        Set<Contact> matchingNames = new HashSet<>();
-        for (Contact c : myContacts) {
-            if (c.getName().toLowerCase().contains(name.toLowerCase())) {
-                matchingNames.add(c);
-            }
-        }
-        return matchingNames;
+        return myContacts.stream().filter((s) -> s.getName().toLowerCase()
+                                  .contains(name.toLowerCase()))
+                                  .collect(Collectors.toSet());
     }
 
 
