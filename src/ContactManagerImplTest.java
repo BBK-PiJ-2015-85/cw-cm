@@ -25,6 +25,7 @@ public class ContactManagerImplTest {
         if (contacts.exists()) {
             contacts.delete();
         }
+
         //reset DateInstance so it returns current date
         di.reset();
 
