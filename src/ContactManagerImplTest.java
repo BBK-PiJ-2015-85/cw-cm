@@ -1515,6 +1515,25 @@ public class ContactManagerImplTest {
     }
 
     @Test
+    public void testsMeetingIdCountAfterFlushPastAndFutureAndDifferentContacts() {
+        cm3.addFutureMeeting(testSet1, plus1Day);
+        cm3.addFutureMeeting(testSet1, plus1Month);
+        cm3.addNewPastMeeting(testSet3, minus1Day, "meet");
+        cm3.addNewPastMeeting(testSet2, minus1Hour, "meet2");
+        cm3.flush();
+        cm = new ContactManagerImpl();
+        assertEquals(5, cm.addFutureMeeting(testSet2, plus1Month));
+        cm.addNewPastMeeting(testSet3, minus1Hour, "");
+        cm.flush();
+        assertNotEquals(3, cm1.getContacts("").size());
+        cm1 = new ContactManagerImpl();
+        assertEquals(3, cm1.getContacts("").size());
+        assertEquals(7, cm1.addFutureMeeting(testSet3, plus1Day));
+        di.changeDate(plus1Year);
+        assertEquals(7, cm1.getPastMeetingListFor(con1).size());
+    }
+
+    @Test
     public void checkOldContactsOverwritten() {
         cm1.flush();
         cm3 = new ContactManagerImpl();
