@@ -234,16 +234,13 @@ public class ContactManagerImpl implements ContactManager {
         if (!getMeeting(id).getDate().before(currentDate.getDateInstance())) {
             throw new IllegalStateException("Cannot add notes to meetings that are yet to occur.");
         }
-        PastMeeting pm = new PastMeetingImpl(id, getPastMeeting(id).getDate(), getPastMeeting(id).getContacts(), text);
-        for (Iterator<PastMeeting> iterator = pastMeetings.iterator(); iterator.hasNext();) {
-            PastMeeting current = iterator.next();
-            if (current.getId() == id) {
-                iterator.remove();
-                break;
-            }
+        PastMeeting updatedPM = new PastMeetingImpl(id, getPastMeeting(id).getDate(), getPastMeeting(id).getContacts(), text);
+        Optional<PastMeeting> oldPM = pastMeetings.stream().filter((s) -> s.getId() == id).findFirst();
+        if (oldPM.isPresent()) {
+            pastMeetings.remove(oldPM.get());
         }
-        pastMeetings.add(pm);
-        return pm;
+        pastMeetings.add(updatedPM);
+        return updatedPM;
     }
 
 
