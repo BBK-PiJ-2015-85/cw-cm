@@ -153,19 +153,15 @@ public class ContactManagerImpl implements ContactManager {
         if (date == null) {
             throw new NullPointerException("Date must not be null.");
         }
-        List<Meeting> resultList = new ArrayList<>();
-        for (Meeting m : futureMeetings) {
-            if (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)
-                    && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) {
-                resultList.add(m);
-            }
-        }
-        for (Meeting m : pastMeetings) {
-            if (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)
-                    && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) {
-                resultList.add(m);
-            }
-        }
+        List<Meeting> fmResultList = futureMeetings.stream()
+                            .filter((s) -> s.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                                        && s.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR))
+                            .collect(Collectors.toList());
+        List<Meeting> resultList = pastMeetings.stream()
+                            .filter((s) -> s.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)
+                                        && s.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR))
+                            .collect(Collectors.toList());
+        resultList.addAll(fmResultList);
         sortMeetingList(resultList);
         return resultList;
     }
