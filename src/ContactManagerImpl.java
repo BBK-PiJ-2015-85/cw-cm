@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by James Pickles on 23/02/2016.
@@ -131,8 +130,8 @@ public class ContactManagerImpl implements ContactManager {
         if (!myContacts.contains(contact)) {
             throw new IllegalArgumentException("Unknown contact cannot used.");
         }
-        Stream<FutureMeeting> fmStream = futureMeetings.stream().filter((s) -> s.getContacts().contains(contact));
-        List<Meeting> resultList = fmStream.collect(Collectors.toList());
+        List<Meeting> resultList = futureMeetings.stream().filter((s) -> s.getContacts().contains(contact))
+                                                          .collect(Collectors.toList());
         sortMeetingList(resultList);
         return resultList;
     }
@@ -186,12 +185,8 @@ public class ContactManagerImpl implements ContactManager {
         if (!myContacts.contains(contact)) {
             throw new IllegalArgumentException("Unknown contact cannot be used.");
         }
-        List<PastMeeting> resultList = new ArrayList<>();
-        for (PastMeeting m : pastMeetings) {
-            if (m.getContacts().contains(contact)) {
-                resultList.add(m);
-            }
-        }
+        List<PastMeeting> resultList = pastMeetings.stream().filter((s) -> s.getContacts().contains(contact))
+                                                            .collect(Collectors.toList());
         sortMeetingList(resultList);
         return resultList;
     }
