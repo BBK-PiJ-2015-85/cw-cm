@@ -74,14 +74,7 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-    /**
-     * Returns the FUTURE meeting with the requested ID, or null if there is none.
-     *
-     * @param id the ID for the meeting
-     * @return the meeting with the requested ID, or null if it there is none.
-     * @throws IllegalArgumentException if there is a meeting with that ID happening
-     * in the past
-     */
+
     public FutureMeeting getFutureMeeting(int id) {
         updateMeetings();
         for (FutureMeeting m : futureMeetings) {
@@ -95,12 +88,7 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-    /**
-     * Returns the meeting with the requested ID, or null if it there is none.
-     *
-     * @param id the ID for the meeting
-     * @return the meeting with the requested ID, or null if it there is none.
-     */
+
     public Meeting getMeeting(int id) {
         Optional<FutureMeeting> fmStream = futureMeetings.stream().filter((s) -> s.getId() == id).findFirst();
         if (fmStream.isPresent()) {
@@ -110,18 +98,7 @@ public class ContactManagerImpl implements ContactManager {
         return (pmStream.isPresent()) ? pmStream.get() : null;
     }
 
-    /**
-     * Returns the list of future meetings scheduled with this contact.
-     *
-     * If there are none, the returned list will be empty. Otherwise,
-     * the list will be chronologically sorted and will not contain any
-     * duplicates.
-     *
-     * @param contact one of the users contacts
-     * @return the list of future meeting(s) scheduled with this contact (maybe empty).
-     * @throws IllegalArgumentException if the contact does not exist
-     * @throws NullPointerException if the contact is null
-     */
+
     public List<Meeting> getFutureMeetingList(Contact contact) {
         updateMeetings();
         if (contact == null) {
@@ -136,22 +113,14 @@ public class ContactManagerImpl implements ContactManager {
         return resultList;
     }
 
-    /**
-     * Returns the list of meetings that are scheduled for, or that took
-     * place on, the specified date
-     *
-     * If there are none, the returned list will be empty. Otherwise,
-     * the list will be chronologically sorted and will not contain any
-     * duplicates.
-     *
-     * @param date the date
-     * @return the list of meetings
-     * @throws NullPointerException if the date are null
-     */
+
     public List<Meeting> getMeetingListOn(Calendar date) {
         if (date == null) {
             throw new NullPointerException("Date must not be null.");
         }
+
+        //need to search through both past and future lists for occasions when date is today and
+        //so may contain both.
         List<Meeting> fmResultList = futureMeetings.stream()
                             .filter((s) -> s.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR)
                                         && s.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR))
@@ -165,18 +134,7 @@ public class ContactManagerImpl implements ContactManager {
         return resultList;
     }
 
-    /**
-     * Returns the list of past meetings in which this contact has participated.
-     *
-     * If there are none, the returned list will be empty. Otherwise,
-     * the list will be chronologically sorted and will not contain any
-     * duplicates.
-     *
-     * @param contact one of the users contacts
-     * @return the list of future meeting(s) scheduled with this contact (maybe empty).
-     * @throws IllegalArgumentException if the contact does not exist
-     * @throws NullPointerException if the contact is null
-     */
+
     public List<PastMeeting> getPastMeetingListFor(Contact contact) {
         updateMeetings();
         if (contact == null) {
@@ -209,20 +167,7 @@ public class ContactManagerImpl implements ContactManager {
         pastMeetings.add(new PastMeetingImpl(meetingIdCount, date, contacts, text));
     }
 
-    /**
-     * Add notes to a meeting.
-     *
-     * This method is used when a future meeting takes place, and is
-     * then converted to a past meeting (with notes) and returned.
-     *
-     * It can be also used to add notes to a past meeting at a later date.
-     *
-     * @param id the ID of the meeting
-     * @param text messages to be added about the meeting.
-     * @throws IllegalArgumentException if the meeting does not exist
-     * @throws IllegalStateException if the meeting is set for a date in the future
-     * @throws NullPointerException if the notes are null
-     */
+
     public PastMeeting addMeetingNotes(int id, String text) {
         updateMeetings();
         if (id <= 0 || id > meetingIdCount) {
@@ -234,11 +179,16 @@ public class ContactManagerImpl implements ContactManager {
         if (!getMeeting(id).getDate().before(currentDate.getDateInstance())) {
             throw new IllegalStateException("Cannot add notes to meetings that are yet to occur.");
         }
+        //create new past meeting with same details but updated notes
         PastMeeting updatedPM = new PastMeetingImpl(id, getPastMeeting(id).getDate(), getPastMeeting(id).getContacts(), text);
+
+        //find and remove the now outdated original
         Optional<PastMeeting> oldPM = pastMeetings.stream().filter((s) -> s.getId() == id).findFirst();
         if (oldPM.isPresent()) {
             pastMeetings.remove(oldPM.get());
         }
+
+        //add the updated version and return it
         pastMeetings.add(updatedPM);
         return updatedPM;
     }
@@ -281,12 +231,7 @@ public class ContactManagerImpl implements ContactManager {
         return matchingIds;
     }
 
-    /**
-     * Save all data to disk.
-     *
-     * This method must be executed when the program is
-     * closed and when/if the user requests it.
-     */
+
     public void flush() {
         try (ObjectOutputStream
                      encode = new ObjectOutputStream(
