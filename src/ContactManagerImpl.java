@@ -103,17 +103,12 @@ public class ContactManagerImpl implements ContactManager {
      * @return the meeting with the requested ID, or null if it there is none.
      */
     public Meeting getMeeting(int id) {
-        for (Meeting m : futureMeetings) {
-            if (id == m.getId()) {
-                return m;
-            }
+        Optional<FutureMeeting> fmStream = futureMeetings.stream().filter((s) -> s.getId() == id).findFirst();
+        if (fmStream.isPresent()) {
+            return fmStream.get();
         }
-        for (Meeting m : pastMeetings) {
-            if (id == m.getId()) {
-                return m;
-            }
-        }
-        return null;
+        Optional<PastMeeting> pmStream = pastMeetings.stream().filter((s) -> s.getId() == id).findFirst();
+        return (pmStream.isPresent()) ? pmStream.get() : null;
     }
 
     /**
