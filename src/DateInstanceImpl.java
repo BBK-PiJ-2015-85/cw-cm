@@ -3,7 +3,7 @@ import java.util.Calendar;
 /**
  * Created by James Pickles on 02/03/2016.
  */
-public class DateInstanceImpl implements DateInstance {
+public final class DateInstanceImpl implements DateInstance {
     private static boolean dateChanged;
     private static Calendar fakeDate;
 

@@ -55,8 +55,8 @@ public class DateInstanceTest {
 
     @Test
     public void testsReset() {
-        di.changeDate(new GregorianCalendar(2016, 12, 25));
-        assertTrue(di.getDateInstance().equals(new GregorianCalendar(2016, 12, 25)));
+        di.changeDate(new GregorianCalendar(2016, 11, 25));
+        assertTrue(di.getDateInstance().equals(new GregorianCalendar(2016, 11, 25)));
         di.reset();
         cal1 = di.getDateInstance();
         cal2 = new GregorianCalendar();

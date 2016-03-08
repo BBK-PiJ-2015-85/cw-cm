@@ -30,32 +30,32 @@ public class FutureMeetingImplTest {
 
     @Test(expected = NullPointerException.class)
     public void testsNullParameter() {
-        Meeting meeting1 = new FutureMeetingImpl(3, null, meetingContacts);
+        new FutureMeetingImpl(3, null, meetingContacts);
     }
 
     @Test(expected = NullPointerException.class)
     public void testsDifferentNullParameter() {
         Calendar date = new GregorianCalendar(2015, 1, 22);
-        Meeting meeting1 = new FutureMeetingImpl(3, date, null);
+        new FutureMeetingImpl(3, date, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testsAddingZeroAsId() {
         Calendar date = new GregorianCalendar(2015, 5, 2);
-        Meeting meeting1 = new FutureMeetingImpl(0, date, meetingContacts);
+        new FutureMeetingImpl(0, date, meetingContacts);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testsAddingNegativeAsId() {
         Calendar date = new GregorianCalendar(2015, 4, 20);
-        Meeting meeting2 = new FutureMeetingImpl(-5, date, meetingContacts);
+        new FutureMeetingImpl(-5, date, meetingContacts);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testsAddingEmptySet() {
-        Calendar date = new GregorianCalendar(2016, 12, 11);
+        Calendar date = new GregorianCalendar(2016, 11, 11);
         Set<Contact> emptyTest = new HashSet<>();
-        Meeting meeting3 = new FutureMeetingImpl(4, date, emptyTest);
+        new FutureMeetingImpl(4, date, emptyTest);
     }
 
     @Test

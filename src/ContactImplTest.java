@@ -209,39 +209,46 @@ public class ContactImplTest {
 
     @Test(expected = NullPointerException.class)
     public void testsAddNullParameterToConstructor() {
-        Contact test = new ContactImpl(1, null);
+        new ContactImpl(1, null);
     }
+
     @Test(expected = NullPointerException.class)
     public void testsAddNullParameterToOtherConstructor() {
-        Contact test = new ContactImpl(1, "Tom", null);
+        new ContactImpl(1, "Tom", null);
     }
+
     @Test(expected = NullPointerException.class)
     public void testsAddDifferentNullParameterToConstructor() {
-        Contact test = new ContactImpl(1, null, "notes");
+        new ContactImpl(1, null, "notes");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddZeroIdToConstructor() {
-        Contact test = new ContactImpl(0, "Test", "Test");
+        new ContactImpl(0, "Test", "Test");
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void testAddZeroIdToOtherConstructor() {
-        Contact test = new ContactImpl(0, "Test");
+        new ContactImpl(0, "Test");
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void testAddNegativeIdToConstructor() {
-        Contact test = new ContactImpl(-2, "Test", "Test");
+        new ContactImpl(-2, "Test", "Test");
     }
+
     @Test(expected = IllegalArgumentException.class)
     public void testAddNegativeIdToOtherConstructor() {
-        Contact test = new ContactImpl(-1, "Test", "Test");
+        new ContactImpl(-1, "Test", "Test");
     }
+
     @Test(expected = IllegalArgumentException.class)
-    public void testAddEmptyNametoConstructor() {
-        Contact test = new ContactImpl(-1, "", "Test");
+    public void testAddEmptyNameToConstructor() {
+        new ContactImpl(-1, "", "Test");
     }
+
     @Test(expected = IllegalArgumentException.class)
-    public void testAddEmptyNametoOtherConstructor() {
-        Contact test = new ContactImpl(-1, "", "Test");
+    public void testAddEmptyNameToOtherConstructor() {
+        new ContactImpl(-1, "", "Test");
     }
 }

@@ -9,14 +9,14 @@ public class ContactImpl implements Contact, Serializable {
     private String contactNotes;
 
     public ContactImpl(int id, String name, String notes) {
+        if (name == null || notes == null) {
+            throw new NullPointerException("Null parameters cannot be passed to constructor.");
+        }
         if (id <= 0) {
             throw new IllegalArgumentException("ID must be a non zero positive integer.");
         }
         if (name.equals("")) {
             throw new IllegalArgumentException("Contact name must not be empty.");
-        }
-        if (name == null || notes == null) {
-            throw new NullPointerException("Null parameters cannot be passed to constructor.");
         }
         contactId = id;
         contactName = name;
@@ -24,14 +24,14 @@ public class ContactImpl implements Contact, Serializable {
     }
 
     public ContactImpl(int id, String name) {
+        if (name == null) {
+            throw new NullPointerException("Null parameters cannot be passed to constructor.");
+        }
         if (id <= 0) {
             throw new IllegalArgumentException("ID must be a non zero positive integer.");
         }
         if (name.equals("")) {
             throw new IllegalArgumentException("Contact name must not be empty.");
-        }
-        if (name == null) {
-            throw new NullPointerException("Null parameters cannot be passed to constructor.");
         }
         contactId = id;
         contactName = name;
