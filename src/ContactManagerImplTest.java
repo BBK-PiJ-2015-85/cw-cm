@@ -923,6 +923,9 @@ public class ContactManagerImplTest {
         cm1.addFutureMeeting(testSet1, plus1Hour);
         cm1.addFutureMeeting(testSet1, plus1Min);
         cm1.addFutureMeeting(testSet1, plus1Sec);
+        //changing date back an hour so there is no time conflict
+        //with the meeting for 1 second ahead
+        di.changeDate(minus1Hour);
         List<Meeting> testList = cm1.getFutureMeetingList(con1);
         assertEquals(6, testList.size());
         assertEquals(plus1Sec, testList.get(0).getDate());
