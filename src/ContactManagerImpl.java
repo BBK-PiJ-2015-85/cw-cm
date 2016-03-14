@@ -307,8 +307,8 @@ public class ContactManagerImpl implements ContactManager {
         //now iterate through list and remove any duplicate meetings
         for(int i = START; i < list.size() - NEXT; i++) {
             for (int j = i + NEXT; j < list.size(); j++) {
-                if (list.get(i).getDate().get(Calendar.YEAR) == list.get(j).getDate().get(Calendar.YEAR)
-                        && list.get(i).getDate().get(Calendar.DAY_OF_YEAR) == list.get(j).getDate().get(Calendar.DAY_OF_YEAR)
+                if (list.get(i).getDate().get(Calendar.DAY_OF_YEAR) == list.get(j).getDate().get(Calendar.DAY_OF_YEAR)
+                        && list.get(i).getDate().get(Calendar.YEAR) == list.get(j).getDate().get(Calendar.YEAR)
                         && list.get(i).getDate().get(Calendar.HOUR_OF_DAY) == list.get(j).getDate().get(Calendar.HOUR_OF_DAY)
                         && list.get(i).getDate().get(Calendar.MINUTE) == list.get(j).getDate().get(Calendar.MINUTE)
                         && list.get(i).getContacts().equals(list.get(j).getContacts())) {
