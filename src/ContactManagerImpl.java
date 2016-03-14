@@ -285,38 +285,15 @@ public class ContactManagerImpl implements ContactManager {
 
 
     /**
-     * Helper method to remove duplicate meetings and sort
-     * the list into chronological order.
-     *
-     * Accidental duplicates entered by the user are removed - i.e.
-     * a meeting with exactly the same contacts and date but different
-     * ID. It is assumed that a meeting can be of the same hour but
-     * different minute (e.g. to allow for half hour meetings)
-     * and also that it is possible to "double book" i.e. you
-     * can have two meetings at the same time but with different
-     * set of contacts.
+     * Helper method to sort a meeting list into chronological order.
      *
      * @param list the list that needs to be sorted.
      * @return the sorted list of meetings.
      */
     private List<? extends Meeting> sortMeetingList(List<? extends Meeting> list) {
 
-        //first sort list into chronological order using lambda
+        //use lambda to sort list and return it
         list.sort((x, y) -> x.getDate().compareTo(y.getDate()));
-
-        //now iterate through list and remove any duplicate meetings
-        for(int i = START; i < list.size() - NEXT; i++) {
-            for (int j = i + NEXT; j < list.size(); j++) {
-                if (list.get(i).getDate().get(Calendar.DAY_OF_YEAR) == list.get(j).getDate().get(Calendar.DAY_OF_YEAR)
-                        && list.get(i).getDate().get(Calendar.YEAR) == list.get(j).getDate().get(Calendar.YEAR)
-                        && list.get(i).getDate().get(Calendar.HOUR_OF_DAY) == list.get(j).getDate().get(Calendar.HOUR_OF_DAY)
-                        && list.get(i).getDate().get(Calendar.MINUTE) == list.get(j).getDate().get(Calendar.MINUTE)
-                        && list.get(i).getContacts().equals(list.get(j).getContacts())) {
-                    list.remove(j);
-                    j--;
-                }
-            }
-        }
         return list;
     }
 

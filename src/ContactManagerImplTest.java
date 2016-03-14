@@ -923,9 +923,7 @@ public class ContactManagerImplTest {
         cm1.addFutureMeeting(testSet1, plus1Hour);
         cm1.addFutureMeeting(testSet1, plus1Min);
         cm1.addFutureMeeting(testSet1, plus1Sec);
-        //changing date back an hour so there is no time conflict
-        //with the meeting for 1 second ahead
-        di.changeDate(minus1Hour);
+
         List<Meeting> testList = cm1.getFutureMeetingList(con1);
         assertEquals(6, testList.size());
         assertEquals(plus1Sec, testList.get(0).getDate());
@@ -939,42 +937,23 @@ public class ContactManagerImplTest {
         }
     }
 
-    @Test
-    public void testsDuplicateMeeting() {
-        cm1.addFutureMeeting(testSet1, plus1Month);
-        cm1.addFutureMeeting(testSet1, plus1Month);
-        assertEquals(1, cm1.getFutureMeetingList(con1).size());
-    }
 
     @Test
-    public void testsManyDuplicates() {
-        cm3.addFutureMeeting(testSet3, plus1Year);
-        cm3.addFutureMeeting(testSet3, plus1Year);
-        cm3.addFutureMeeting(testSet3, plus1Year);
-        cm3.addFutureMeeting(testSet2, plus1Month);
-        cm3.addFutureMeeting(testSet2, plus1Month);
-        assertEquals(2, cm3.getFutureMeetingList(con2).size());
-        assertEquals(plus1Month, cm3.getFutureMeetingList(con2).get(0).getDate());
-        assertEquals(plus1Year, cm3.getFutureMeetingList(con2).get(1).getDate());
-    }
-
-    @Test
-    public void testsSimilarMeetingsButDifferentWithSomeDuplicatesToo() {
+    public void testsIDsForReturnedList() {
         cm3.addFutureMeeting(testSet2, plus1Min);
         cm3.addFutureMeeting(testSet1, plus1Min);
         cm3.addFutureMeeting(testSet1, plus1Min);
-        cm3.addFutureMeeting(testSet2, plus1Hour);
         cm3.addFutureMeeting(testSet2, plus1Day);
         cm3.addFutureMeeting(testSet2, plus1Day);
-        cm3.addFutureMeeting(testSet3, plus1Day);
-        cm3.addFutureMeeting(testSet2, plus1Min);
-        cm3.addFutureMeeting(testSet1, plus1Min);
-        assertEquals(5, cm3.getFutureMeetingList(con1).size());
-        assertEquals(plus1Min, cm3.getFutureMeetingList(con1).get(0).getDate());
-        assertEquals(plus1Min, cm3.getFutureMeetingList(con1).get(1).getDate());
-        assertEquals(plus1Hour, cm3.getFutureMeetingList(con1).get(2).getDate());
-        assertEquals(plus1Day, cm3.getFutureMeetingList(con1).get(3).getDate());
-        assertEquals(plus1Day, cm3.getFutureMeetingList(con1).get(4).getDate());
+        cm3.addFutureMeeting(testSet2, plus1Month);
+        cm3.addFutureMeeting(testSet3, plus1Month);
+        cm3.addFutureMeeting(testSet2, plus1Year);
+        cm3.addFutureMeeting(testSet1, plus1Year);
+        List<Meeting> testList = cm3.getFutureMeetingList(con1);
+        assertEquals(9, testList.size());
+        for (int i = 0; i < testList.size(); i++) {
+            assertEquals(testList.get(i).getId(), i + 1);
+        }
     }
 
     @Test
@@ -1117,44 +1096,22 @@ public class ContactManagerImplTest {
         }
     }
 
-    @Test
-    public void testsNoDuplicates() {
-        cm3.addNewPastMeeting(testSet2, minus1Day, "test");
-        cm3.addNewPastMeeting(testSet2, minus1Day, "duplicate");
-        assertEquals(1, cm3.getPastMeetingListFor(con1).size());
-    }
 
     @Test
-    public void testsMultipleDuplicates() {
-        cm3.addNewPastMeeting(testSet2, minus1Day, "test1");
-        cm3.addNewPastMeeting(testSet2, minus1Day, "test2");
-        cm3.addNewPastMeeting(testSet3, minus1Min, "test");
-        cm3.addNewPastMeeting(testSet3, minus1Min, "test duplicate");
-        cm3.addNewPastMeeting(testSet3, minus1Min, "another test duplicate");
-        List<PastMeeting> testList = cm3.getPastMeetingListFor(con1);
-        assertEquals(2, testList.size());
-        assertEquals(cm3.getPastMeetingListFor(con1), cm3.getPastMeetingListFor(con2));
-        assertEquals(minus1Day, testList.get(0).getDate());
-        assertEquals(minus1Min, testList.get(1).getDate());
-    }
-
-    @Test
-    public void testsMultipleDuplicatesAndSimilarButNotDuplicates() {
+    public void testsMultipleSimilarMeetings() {
         cm3.addNewPastMeeting(testSet2, minus1Sec, "");
-        cm3.addNewPastMeeting(testSet2, minus1Sec, "duplicate");
+        cm3.addNewPastMeeting(testSet2, minus1Sec, "meeting");
         cm3.addNewPastMeeting(testSet1, minus1Sec, "same time different contacts");
         cm3.addNewPastMeeting(testSet3, minus1Min, "test");
-        cm3.addNewPastMeeting(testSet3, minus1Min, "test duplicate");
-        cm3.addNewPastMeeting(testSet3, minus1Min, "another test duplicate");
+        cm3.addNewPastMeeting(testSet3, minus1Min, "test");
+        cm3.addNewPastMeeting(testSet3, minus1Min, "another test");
         cm3.addNewPastMeeting(testSet2, minus1Min, "different contacts same time");
         cm3.addNewPastMeeting(testSet1, minus1Hour, "unique meeting");
         List<PastMeeting> testList = cm3.getPastMeetingListFor(con1);
-        assertEquals(5, testList.size());
+        assertEquals(8, testList.size());
         assertEquals("unique meeting", testList.get(0).getNotes());
         assertEquals(minus1Min, testList.get(1).getDate());
-        assertEquals(minus1Min, testList.get(2).getDate());
-        assertEquals(minus1Sec, testList.get(3).getDate());
-        assertEquals(minus1Sec, testList.get(4).getDate());
+        assertEquals(minus1Sec, testList.get(5).getDate());
     }
 
     @Test
@@ -1167,18 +1124,18 @@ public class ContactManagerImplTest {
     }
 
     @Test
-    public void testsMixOfFutureAndPastWithSomeFutureBecomingPastAndADuplicate() {
+    public void testsMixOfFutureAndPastWithSomeFutureBecomingPast() {
         cm3.addNewPastMeeting(testSet1, minus1Day, "meeting1");
-        cm3.addFutureMeeting(testSet2, plus1Min);
+        cm3.addFutureMeeting(testSet2, plus1Sec);
         cm3.addFutureMeeting(testSet2, plus1Min);
         cm3.addFutureMeeting(testSet3, plus1Hour);
         cm3.addFutureMeeting(testSet1, plus1Month);
         assertEquals(1, cm3.getPastMeetingListFor(con1).size());
         di.changeDate(plus1Day);
-        assertEquals(3, cm3.getPastMeetingListFor(con1).size());
+        assertEquals(4, cm3.getPastMeetingListFor(con1).size());
         assertEquals(minus1Day, cm3.getPastMeetingListFor(con1).get(0).getDate());
-        assertEquals(plus1Min, cm3.getPastMeetingListFor(con1).get(1).getDate());
-        assertEquals(plus1Hour, cm3.getPastMeetingListFor(con1).get(2).getDate());
+        assertEquals(plus1Min, cm3.getPastMeetingListFor(con1).get(2).getDate());
+        assertEquals(plus1Hour, cm3.getPastMeetingListFor(con1).get(3).getDate());
     }
 
     /**
@@ -1273,28 +1230,9 @@ public class ContactManagerImplTest {
         assertEquals(plus1Hour, testList.get(5).getDate());
     }
 
-    @Test
-    public void testsDuplicatesAreRemoved() {
-        cm3.addFutureMeeting(testSet2, plus1Month);
-        cm3.addFutureMeeting(testSet2, plus1Month);
-        assertEquals(1, cm3.getMeetingListOn(plus1Month).size());
-    }
 
     @Test
-    public void testsMultipleDuplicatesBothPastAndFuture() {
-        cm3.addFutureMeeting(testSet2, plus1Hour);
-        cm3.addFutureMeeting(testSet2, plus1Hour);
-        cm3.addNewPastMeeting(testSet3, minus1Min, "test");
-        cm3.addNewPastMeeting(testSet3, minus1Min, "test duplicate");
-        cm3.addNewPastMeeting(testSet3, minus1Min, "another test duplicate");
-        List<Meeting> testList = cm3.getMeetingListOn(current);
-        assertEquals(2, testList.size());
-        assertEquals(minus1Min, testList.get(0).getDate());
-        assertEquals(plus1Hour, testList.get(1).getDate());
-    }
-
-    @Test
-    public void testsMultipleDuplicatesButAlsoSimilarButNotDuplicates() {
+    public void testsMultipleDates() {
         cm3.addFutureMeeting(testSet2, plus1Hour);
         cm3.addFutureMeeting(testSet2, plus1Hour);
         cm3.addFutureMeeting(testSet1, plus1Hour);
@@ -1304,12 +1242,12 @@ public class ContactManagerImplTest {
         cm3.addNewPastMeeting(testSet2, minus1Min, "different contacts same time");
         cm3.addNewPastMeeting(testSet1, minus1Hour, "unique meeting");
         List<Meeting> testList = cm3.getMeetingListOn(current);
-        assertEquals(5, testList.size());
+        assertEquals(8, testList.size());
         assertEquals(minus1Hour, testList.get(0).getDate());
         assertEquals(minus1Min, testList.get(1).getDate());
-        assertEquals(minus1Min, testList.get(2).getDate());
-        assertEquals(plus1Hour, testList.get(3).getDate());
-        assertEquals(plus1Hour, testList.get(4).getDate());
+        assertEquals(minus1Min, testList.get(4).getDate());
+        assertEquals(plus1Hour, testList.get(5).getDate());
+        assertEquals(plus1Hour, testList.get(7).getDate());
     }
 
     /**
