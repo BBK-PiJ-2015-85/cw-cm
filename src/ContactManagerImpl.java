@@ -288,7 +288,9 @@ public class ContactManagerImpl implements ContactManager {
      * Helper method to remove duplicate meetings and sort
      * the list into chronological order.
      *
-     * It is assumed that a meeting can be of the same hour but
+     * Accidental duplicates entered by the user are removed - i.e.
+     * a meeting with exactly the same contacts and date but different
+     * ID. It is assumed that a meeting can be of the same hour but
      * different minute (e.g. to allow for half hour meetings)
      * and also that it is possible to "double book" i.e. you
      * can have two meetings at the same time but with different
