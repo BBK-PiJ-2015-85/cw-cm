@@ -56,6 +56,9 @@ public class ContactManagerImpl implements ContactManager {
         currentDate = new DateInstanceImpl();
     }
 
+    /**
+     * @see ContactManager#addFutureMeeting(Set, Calendar)
+     */
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
         if (contacts == null || date == null) {
             throw new NullPointerException("Contacts and date must not be null.");
@@ -71,7 +74,9 @@ public class ContactManagerImpl implements ContactManager {
         return meetingIdCount;
     }
 
-
+    /**
+     * @see ContactManager#getPastMeeting(int)
+     */
     public PastMeeting getPastMeeting(int id) {
         updateMeetings();
         for (PastMeeting m : pastMeetings) {
@@ -85,7 +90,9 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-
+    /**
+     * @see ContactManager#getFutureMeeting(int)
+     */
     public FutureMeeting getFutureMeeting(int id) {
         updateMeetings();
         for (FutureMeeting m : futureMeetings) {
@@ -99,7 +106,9 @@ public class ContactManagerImpl implements ContactManager {
         return null;
     }
 
-
+    /**
+     * @see ContactManager#getMeeting(int)
+     */
     public Meeting getMeeting(int id) {
         Optional<FutureMeeting> fmStream = futureMeetings.stream().filter((s) -> s.getId() == id).findFirst();
         if (fmStream.isPresent()) {
@@ -109,7 +118,9 @@ public class ContactManagerImpl implements ContactManager {
         return (pmStream.isPresent()) ? pmStream.get() : null;
     }
 
-
+    /**
+     * @see ContactManager#getFutureMeetingList(Contact)
+     */
     public List<Meeting> getFutureMeetingList(Contact contact) {
         updateMeetings();
         if (contact == null) {
@@ -124,7 +135,9 @@ public class ContactManagerImpl implements ContactManager {
         return resultList;
     }
 
-
+    /**
+     * @see ContactManager#getMeetingListOn(Calendar)
+     */
     public List<Meeting> getMeetingListOn(Calendar date) {
         if (date == null) {
             throw new NullPointerException("Date must not be null.");
@@ -145,7 +158,9 @@ public class ContactManagerImpl implements ContactManager {
         return resultList;
     }
 
-
+    /**
+     * @see ContactManager#getPastMeetingListFor(Contact)
+     */
     public List<PastMeeting> getPastMeetingListFor(Contact contact) {
         updateMeetings();
         if (contact == null) {
@@ -160,7 +175,9 @@ public class ContactManagerImpl implements ContactManager {
         return resultList;
     }
 
-
+    /**
+     * @see ContactManager#addNewPastMeeting(Set, Calendar, String)
+     */
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
         if (contacts == null || date == null || text == null) {
             throw new NullPointerException("Null parameters cannot be passed as arguments.");
@@ -178,7 +195,9 @@ public class ContactManagerImpl implements ContactManager {
         pastMeetings.add(new PastMeetingImpl(meetingIdCount, date, contacts, text));
     }
 
-
+    /**
+     * @see ContactManager#addMeetingNotes(int, String)
+     */
     public PastMeeting addMeetingNotes(int id, String text) {
         updateMeetings();
         if (id <= 0 || id > meetingIdCount) {
@@ -204,7 +223,9 @@ public class ContactManagerImpl implements ContactManager {
         return updatedPM;
     }
 
-
+    /**
+     * @see ContactManager#addNewContact(String, String)
+     */
     public int addNewContact(String name, String notes) {
         if (name == null || notes == null) {
             throw new NullPointerException("Arguments must not be null.");
@@ -217,7 +238,9 @@ public class ContactManagerImpl implements ContactManager {
         return contactIdCount;
     }
 
-
+    /**
+     * @see ContactManager#getContacts(String)
+     */
     public Set<Contact> getContacts(String name) {
         if (name == null) {
             throw new NullPointerException("String name cannot be null.");
@@ -227,7 +250,9 @@ public class ContactManagerImpl implements ContactManager {
                                   .collect(Collectors.toSet());
     }
 
-
+    /**
+     * @see ContactManager#getContacts(int...)
+     */
     public Set<Contact> getContacts(int... ids) {
         if (ids.length == 0) {
             throw new IllegalArgumentException("At least one ID must be provided.");
@@ -242,7 +267,9 @@ public class ContactManagerImpl implements ContactManager {
         return matchingIds;
     }
 
-
+    /**
+     * @see ContactManager#flush()
+     */
     public void flush() {
         try (ObjectOutputStream
                      encode = new ObjectOutputStream(

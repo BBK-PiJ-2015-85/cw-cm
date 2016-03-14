@@ -17,11 +17,7 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting, Seriali
     }
 
     /**
-     * Returns the notes from the meeting.
-     *
-     * If there are no notes, the empty string is returned.
-     *
-     * @return the notes from the meeting.
+     * @see PastMeeting#getNotes()
      */
     public String getNotes() {
         return meetingNotes;

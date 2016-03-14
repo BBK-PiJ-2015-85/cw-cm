@@ -27,31 +27,21 @@ public abstract class MeetingImpl implements Meeting, Serializable {
     }
 
     /**
-     * Returns the id of the meeting.
-     *
-     * @return the id of the meeting.
+     * @see Meeting#getId()
      */
     public int getId() {
         return meetingId;
     }
 
     /**
-     * Return the date of the meeting.
-     *
-     * @return the date of the meeting.
+     * @see Meeting#getDate()
      */
     public Calendar getDate() {
         return meetingDate;
     }
 
     /**
-     * Return the details of people that attended the meeting.
-     *
-     * The list contains a minimum of one contact (if there were
-     * just two people: the user and the contact) and may contain an
-     * arbitrary number of them.
-     *
-     * @return the details of people that attended the meeting.
+     * @see Meeting#getContacts()
      */
     public Set<Contact> getContacts() {
         return meetingAttendees;

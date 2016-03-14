@@ -39,39 +39,28 @@ public class ContactImpl implements Contact, Serializable {
     }
 
     /**
-     * Returns the ID of the contact.
-     *
-     * @return the ID of the contact.
+     * @see Contact#getId()
      */
     public int getId() {
         return contactId;
     }
 
     /**
-     * Returns the name of the contact.
-     *
-     * @return the name of the contact.
+     * @see Contact#getName()
      */
     public String getName() {
         return contactName;
     }
 
     /**
-     * Returns our notes about the contact, if any.
-     *
-     * If we have not written anything about the contact, the empty
-     * string is returned.
-     *
-     * @return a string with notes about the contact, maybe empty.
+     * @see Contact#getNotes()
      */
     public String getNotes() {
         return contactNotes;
     }
 
     /**
-     * Add notes about the contact.
-     *
-     * @param note the notes to be added
+     * @see Contact#addNotes(String)
      */
     public void addNotes(String note) {
         if (contactNotes.equals("")) {
